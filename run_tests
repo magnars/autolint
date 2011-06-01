@@ -1,6 +1,10 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 
-require.paths.push(__dirname);
-require.paths.push(__dirname + "/lib");
+require.paths.push(__dirname + '/lib');
 
-require('./test/watch_for_changes_test.js');
+var buster = require("buster");
+var glob = require("glob");
+
+glob.glob("test/**/*-test.js", function (err, files) {
+    files.forEach(function (f) { require("./" + f); });
+});
