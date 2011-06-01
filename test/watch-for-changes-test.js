@@ -6,7 +6,8 @@ var assert = buster.assert;
 var watchForChanges = require('watch_for_changes');
 var fs = require('fs');
 
-var today = 1306852705933;
+var now = new Date(1);
+var later = new Date(2);
 
 buster.testCase("watchForChanges", {
   setUp: function () {
@@ -23,20 +24,16 @@ buster.testCase("watchForChanges", {
   },
   
   "should callback when changed": function () {
-    fs.watchFile.yields({mtime: new Date(today)}, {mtime: new Date(today + 3)});
-    var changed = this.stub();
-
-    watchForChanges('', changed);
-    
-    assert.called(changed);
+    fs.watchFile.yields({mtime: now}, {mtime: later});
+    var callback = this.stub();
+    watchForChanges('', callback);
+    assert.called(callback);
   },
   
   "should ignore when mtime is equal": function () {
-    fs.watchFile.yields({mtime: new Date(today)}, {mtime: new Date(today)});
-    var changed = this.stub();
-
-    watchForChanges('', changed);
-    
-    assert.notCalled(changed);
+    fs.watchFile.yields({mtime: now}, {mtime: now});
+    var callback = this.stub();
+    watchForChanges('', callback);
+    assert.notCalled(callback);
   }
 });

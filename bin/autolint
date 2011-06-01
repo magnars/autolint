@@ -1,0 +1,9 @@
+#!/usr/local/bin/node
+
+require.paths.push(__dirname + '/../lib');
+
+var watchForChanges = require('watch_for_changes');
+
+watchForChanges('lib/watch_for_changes.js', function () {
+  console.log('lib/watch_for_changes.js changed');
+});
