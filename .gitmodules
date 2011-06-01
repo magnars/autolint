@@ -1,0 +1,6 @@
+[submodule "node_modules/buster"]
+	path = node_modules/buster
+	url = git://gitorious.org/buster/buster.git
+[submodule "node_modules/growl"]
+	path = node_modules/growl
+	url = https://github.com/visionmedia/node-growl.git
