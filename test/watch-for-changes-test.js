@@ -1,10 +1,11 @@
 /*jslint indent: 2, onevar: false, undef: true */
 /*globals module, require */
 
+var fs = require('fs');
 var buster = require("buster");
 var assert = buster.assert;
+
 var watchForChanges = require('watch_for_changes');
-var fs = require('fs');
 
 var now = new Date(1);
 var later = new Date(2);
