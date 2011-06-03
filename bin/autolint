@@ -2,8 +2,11 @@
 
 require.paths.push(__dirname + '/../lib');
 
-var watchForChanges = require('watch_for_changes');
+var fileWatcher = require('file-watcher');
 
-watchForChanges('lib/watch_for_changes.js', function () {
-  console.log('lib/watch_for_changes.js changed');
+fileWatcher.on('change', function (file) {
+  console.log(file, "changed");
 });
+
+fileWatcher.register("lib/*.js");
+fileWatcher.register("test/*.js");
