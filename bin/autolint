@@ -3,17 +3,13 @@ require.paths.push(__dirname + '/../lib');
 
 var linter = require('jslint-linter');
 var overview = require('overview');
-
-overview.show(Object.create(linter), ["lib/*.js", "test/*.js"]);
-
-var fileWatcher = require('file-watcher');
 var reporter = require('verbose-reporter');
+var watchForLint = require('watch-for-lint');
 
-fileWatcher.on('change', function (file) {
-  linter.checkFile(file);
-});
+var paths = ["lib/*.js", "test/*.js"];
 
-fileWatcher.register("lib/*.js");
-fileWatcher.register("test/*.js");
+overview.show(Object.create(linter), paths);
 
 reporter.listenTo(linter);
+
+watchForLint(linter, paths);
