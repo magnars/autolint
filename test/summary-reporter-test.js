@@ -39,10 +39,10 @@ buster.testCase("summaryReporter", {
     assert.equals(this.reporter.getSummary(), "0 clean files, 3 errors in 2 dirty files");
   },
   
-  "should puts summary": function () {
+  "should print summary": function () {
     var sys = require('sys');
     this.stub(sys, 'puts');
-    this.reporter.putsSummary();
+    this.reporter.print();
     assert.calledOnce(sys.puts);
   }
 });

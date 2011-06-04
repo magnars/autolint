@@ -1,10 +1,12 @@
 #!/usr/local/bin/node
-
 require.paths.push(__dirname + '/../lib');
 
-var fileWatcher = require('file-watcher');
-
 var linter = require('jslint-linter');
+var overview = require('overview');
+
+overview.show(linter, ["lib/*.js", "test/*.js"]);
+
+var fileWatcher = require('file-watcher');
 var reporter = require('concise-reporter');
 
 fileWatcher.on('change', function (file) {
