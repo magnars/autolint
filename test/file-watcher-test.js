@@ -25,13 +25,13 @@ buster.testCase("fileWatcher", {
   
   "should use glob to find files": function () {
     fileWatcher.register('*.js');
-    assert.called(glob.glob);
+    assert.calledOnce(glob.glob);
     assert.calledWith(glob.glob, '*.js');
   },
   
   "should watch files for changes": function () {
     fileWatcher.register('*.js');
-    assert.called(fileWatcher.watchForChanges);
+    assert.calledOnce(fileWatcher.watchForChanges);
     assert.calledWith(fileWatcher.watchForChanges, 'file.js');
   },
   
@@ -42,7 +42,7 @@ buster.testCase("fileWatcher", {
     fileWatcher.register('*.js');
     fileWatcher.watchForChanges.getCall(0).args[1]();
     
-    assert.called(callback);
+    assert.calledOnce(callback);
     assert.calledWith(callback, 'file.js');
   }
   

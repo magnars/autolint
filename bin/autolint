@@ -4,9 +4,14 @@ require.paths.push(__dirname + '/../lib');
 
 var fileWatcher = require('file-watcher');
 
+var linter = require('jslint-linter');
+var reporter = require('concise-reporter');
+
 fileWatcher.on('change', function (file) {
-  console.log(file, "changed");
+  linter.checkFile(file);
 });
 
 fileWatcher.register("lib/*.js");
 fileWatcher.register("test/*.js");
+
+reporter.listenTo(linter);
