@@ -4,10 +4,10 @@ require.paths.push(__dirname + '/../lib');
 var linter = require('jslint-linter');
 var overview = require('overview');
 
-overview.show(linter, ["lib/*.js", "test/*.js"]);
+overview.show(Object.create(linter), ["lib/*.js", "test/*.js"]);
 
 var fileWatcher = require('file-watcher');
-var reporter = require('concise-reporter');
+var reporter = require('verbose-reporter');
 
 fileWatcher.on('change', function (file) {
   linter.checkFile(file);

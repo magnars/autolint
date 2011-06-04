@@ -15,7 +15,7 @@ buster.testCase("overview", {
     this.stub(glob, 'glob');
     this.stub(conciseReporter, 'listenTo');
     this.stub(summaryReporter, 'listenTo');
-    this.linter = new EventEmitter;
+    this.linter = new EventEmitter();
     this.linter.checkFile = this.stub();
   },
   
