@@ -194,6 +194,17 @@ buster.testCase("repository", {
       this.checkPromise.resolve();
       
       assert.called(callback);
+    },
+    
+    "should emit scanComplete when all files checked": function () {
+      var callback = this.stub();
+      this.repo.on('scanComplete', callback);
+      this.repo.scan();
+
+      this.findPromise.resolve();
+      this.checkPromise.resolve();
+      
+      assert.called(callback);
     }
   }
 });
