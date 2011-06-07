@@ -16,7 +16,7 @@ buster.testCase("repository", {
   },
   
   "should keep track of clean files": function () {
-    this.linter.emit('fileChecked', 'file1.js');
+    this.linter.emit('fileChecked', 'file1.js', []);
     assert.equals(this.repo.files['file1.js'], []);
   },
   
@@ -26,12 +26,23 @@ buster.testCase("repository", {
     assert.equals(this.repo.files['file2.js'], errors);
   },
   
-  "should relay dirty event": function () {
-    var callback = this.stub();
-    this.repo.on('dirty', callback);
-    this.linter.emit('dirty', 'file3.js', []);
-    assert.called(callback);
-    assert.calledWith(callback, 'file3.js', []);
+  "dirty event": {
+    setUp: function () {
+      this.callback = this.stub();
+      this.repo.on('dirty', this.callback);
+    },
+    
+    "should emit when we have errors": function () {
+      var errors = [{}, {}, {}];
+      this.linter.emit('fileChecked', 'file3.js', errors);
+      assert.called(this.callback);
+      assert.calledWith(this.callback, 'file3.js', errors);
+    },
+    
+    "should not emit without errors": function () {
+      this.linter.emit('fileChecked', 'file4.js', []);
+      assert.notCalled(this.callback);
+    }
   },
   
   "newFile event": {
@@ -64,13 +75,13 @@ buster.testCase("repository", {
     },
     
     "should emit event with new error": function () {
-      this.linter.emit('dirty', 'file.js', [this.oldError, this.newError]);
+      this.linter.emit('fileChecked', 'file.js', [this.oldError, this.newError]);
       assert.called(this.callback);
       assert.calledWith(this.callback, 'file.js', [this.newError]);
     },
     
     "should not emit event without new errors": function () {
-      this.linter.emit('dirty', 'file.js', [this.oldError]);
+      this.linter.emit('fileChecked', 'file.js', [this.oldError]);
       assert.notCalled(this.callback);
     }
   },
@@ -189,17 +200,6 @@ buster.testCase("repository", {
     "should resolve promise when all files checked": function () {
       var callback = this.stub();
       this.repo.scan().then(callback);
-
-      this.findPromise.resolve();
-      this.checkPromise.resolve();
-      
-      assert.called(callback);
-    },
-    
-    "should emit scanComplete when all files checked": function () {
-      var callback = this.stub();
-      this.repo.on('scanComplete', callback);
-      this.repo.scan();
 
       this.findPromise.resolve();
       this.checkPromise.resolve();

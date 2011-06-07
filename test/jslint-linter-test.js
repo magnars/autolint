@@ -47,14 +47,6 @@ buster.testCase("jslint-linter", {
       jslint.check.errors = {a: "a"};
     },
     
-    "should emit dirty event": function () {
-      linter.on('dirty', this.callback);
-
-      linter.checkFile('file.js');
-      assert.calledOnce(this.callback);
-      assert.calledWith(this.callback, 'file.js', {a: "a"});
-    },
-    
     "should emit fileChecked event": function () {
       linter.on('fileChecked', this.callback);
       
@@ -79,14 +71,6 @@ buster.testCase("jslint-linter", {
   "if check succeeds": {
     setUp: function () {
       jslint.check.returns(true);
-    },
-    
-    "should emit clean event": function () {
-      linter.on('clean', this.callback);
-
-      linter.checkFile('file.js');
-      assert.calledOnce(this.callback);
-      assert.calledWith(this.callback, 'file.js');
     },
     
     "should emit fileChecked event": function () {
