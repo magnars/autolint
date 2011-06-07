@@ -8,25 +8,23 @@ var repository = require('repository').create();
 var watchForLint = require('watch-for-lint');
 var newFileReporter = require('new-file-reporter');
 var lintReporter = require('lint-reporter');
-
-//if (verbose) {
-//  newFileReporter.beVerbose();
-//}
+var cleanReporter = require('clean-reporter');
+var summaryReporter = require('summary-reporter');
 
 repository.listenTo(linter);
-
 watchForLint(repository, linter);
 
-newFileReporter.listenTo(repository); // listens to 'newFile' (old concise-reporter)
-//summaryReporter.listenTo(repository); // listens to 'change' and 'completeScan'
+newFileReporter.listenTo(repository);
 
 repository.scan(paths).then(function () {
-  //fixReporter.listenTo(repository);   // listens to 'errorsFixed'
-  lintReporter.listenTo(repository);  // listens to 'dirty' (old verbose-reporter)
+  cleanReporter.listenTo(repository);
+  lintReporter.listenTo(repository);
   //growlReporter.listenTo(repository); // listens to 'errorsFixed' and 'errorsIntroduced'
-  newFileReporter.beVerbose();
+  summaryReporter.listenTo(repository);
+  summaryReporter.print();
 });
 
 //onInterrupt("Scanning for new files.", function () {
+//  newFileReporter.beVerbose();
 //  repository.rescan(paths);
 //});

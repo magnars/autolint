@@ -4,14 +4,18 @@
 var buster = require('buster');
 var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
+var sys = require('sys');
+var ansi = require('ansi');
 
 var summaryReporter = require('summary-reporter');
 
 buster.testCase("summaryReporter", {
   setUp: function () {
-    this.linter = new EventEmitter();
+    this.stub(sys, 'puts');
+    this.repository = new EventEmitter();
+    this.repository.files = {};
     this.reporter = Object.create(summaryReporter);
-    this.reporter.listenTo(this.linter);
+    this.reporter.listenTo(this.repository);
   },
   
   "should be an object": function () {
@@ -22,27 +26,62 @@ buster.testCase("summaryReporter", {
     assert.isFunction(summaryReporter.listenTo);
   },
   
+  "should count number of clean files": function () {
+    this.repository.files = {
+      'file1.js': [],
+      'file2.js': [],
+      'file3.js': [{}]
+    };
+    assert.equals(this.reporter.numCleanFiles(), 2);
+  },
+  
+  "should count number of dirty files": function () {
+    this.repository.files = {
+      'file1.js': [],
+      'file2.js': [{}]
+    };
+    assert.equals(this.reporter.numDirtyFiles(), 1);
+  },
+  
+  "should count number of errors": function () {
+    this.repository.files = {
+      'file1.js': [{}],
+      'file2.js': [{}, {}]
+    };
+    assert.equals(this.reporter.numErrors(), 3);
+  },
+  
   "should create summary": function () {
     assert.equals(this.reporter.getSummary(), "0 clean files, 0 errors in 0 dirty files");
   },
   
-  "should count clean files": function () {
-    this.linter.emit('clean', '');
-    this.linter.emit('clean', '');
-    this.linter.emit('clean', '');
-    assert.equals(this.reporter.getSummary(), "3 clean files, 0 errors in 0 dirty files");
-  },
-  
-  "should count errors in dirty files": function () {
-    this.linter.emit('dirty', '', [{}]);
-    this.linter.emit('dirty', '', [{}, {}]);
-    assert.equals(this.reporter.getSummary(), "0 clean files, 3 errors in 2 dirty files");
-  },
-  
-  "should print summary": function () {
-    var sys = require('sys');
-    this.stub(sys, 'puts');
+  "should print summary without errors in green": function () {
     this.reporter.print();
     assert.calledOnce(sys.puts);
+    assert.calledWith(sys.puts, "\nGREEN: 0 clean files, 0 errors in 0 dirty files");
+  },
+  
+  "should print summary with errors in red": function () {
+    this.repository.files = { 'file1.js': [{}] };
+    this.reporter.print();
+    assert.calledOnce(sys.puts);
+    assert.calledWith(sys.puts, "\nRED: 0 clean files, 1 error in 1 dirty file");
+  },
+  
+  "should print summary on change event": function (done) {
+    this.repository.emit('change');
+    process.nextTick(function () {
+      assert.calledOnce(sys.puts);
+      done();
+    });
   }
 });
+
+ansi.RED = function (string) {
+  return "RED: " + string;
+};
+
+ansi.GREEN = function (string) {
+  return "GREEN: " + string;
+};
+
