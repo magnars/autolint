@@ -25,7 +25,7 @@ buster.testCase("conciseReporter", {
   },
   
   "should print error count on lint": function () {
-    this.linter.emit('lint', 'file.js', [{}]);
+    this.linter.emit('dirty', 'file.js', [{}]);
 
     assert.calledOnce(sys.puts);
     assert.match(sys.puts.getCall(0).args[0], 'file.js');
@@ -33,7 +33,7 @@ buster.testCase("conciseReporter", {
   },
   
   "should pluralize properly": function () {
-    this.linter.emit('lint', 'file.js', [{}, {}, {}]);
+    this.linter.emit('dirty', 'file.js', [{}, {}, {}]);
     assert.match(sys.puts.getCall(0).args[0], '3 errors');
   }
 });

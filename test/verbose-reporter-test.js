@@ -25,13 +25,13 @@ buster.testCase("verboseReporter", {
   },
   
   "should print filename with number of errors": function () {
-    this.linter.emit('lint', 'file1.js', [{}, {}]);
+    this.linter.emit('dirty', 'file1.js', [{}, {}]);
     assert.called(sys.puts);
     assert.match(sys.puts.getCall(0).args[0], 'Lint in file1.js, 2 errors:');
   },
   
   "should print error": function () {
-    this.linter.emit('lint', 'file1.js', [{
+    this.linter.emit('dirty', 'file1.js', [{
       line: 17,
       character: 9,
       reason: 'Bazinga!'
@@ -40,7 +40,7 @@ buster.testCase("verboseReporter", {
   },
   
   "should store last lint": function () {
-    this.linter.emit('lint', 'file2.js', []);
+    this.linter.emit('dirty', 'file2.js', []);
     assert.equals(this.reporter.lastDirtyFile, 'file2.js');
   },
   

@@ -34,8 +34,8 @@ buster.testCase("summaryReporter", {
   },
   
   "should count errors in dirty files": function () {
-    this.linter.emit('lint', '', [{}]);
-    this.linter.emit('lint', '', [{}, {}]);
+    this.linter.emit('dirty', '', [{}]);
+    this.linter.emit('dirty', '', [{}, {}]);
     assert.equals(this.reporter.getSummary(), "0 clean files, 3 errors in 2 dirty files");
   },
   

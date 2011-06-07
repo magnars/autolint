@@ -92,7 +92,7 @@ buster.testCase("overview", {
       this.overview.print();
 
       this.linter.emit('clean', 'file1.js');
-      this.linter.emit('lint', 'file2.js');
+      this.linter.emit('dirty', 'file2.js');
       this.linter.emit('clean', 'file3.js');
       assert.calledOnce(this.overview.allChecked);
     },
