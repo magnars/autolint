@@ -4,33 +4,24 @@
 var buster = require("buster");
 var assert = buster.assert;
 var fs = require('fs');
-var glob = require('glob');
 
 var fileWatcher = require('file-watcher');
 
 buster.testCase("fileWatcher", {
   setUp: function () {
-    this.stub(glob, 'glob');
     this.stub(fileWatcher, 'watchForChanges');
-    glob.glob.yields(null, ['file.js']);
   },
   
   "should be an object": function () {
     assert.isObject(fileWatcher);
   },
   
-  "should have register function": function () {
-    assert.isFunction(fileWatcher.register);
-  },
-  
-  "should use glob to find files": function () {
-    fileWatcher.register('*.js');
-    assert.calledOnce(glob.glob);
-    assert.calledWith(glob.glob, '*.js');
+  "should have registerFile function": function () {
+    assert.isFunction(fileWatcher.registerFile);
   },
   
   "should watch files for changes": function () {
-    fileWatcher.register('*.js');
+    fileWatcher.registerFile('file.js');
     assert.calledOnce(fileWatcher.watchForChanges);
     assert.calledWith(fileWatcher.watchForChanges, 'file.js');
   },
@@ -39,7 +30,7 @@ buster.testCase("fileWatcher", {
     var callback = this.stub();
     fileWatcher.on('change', callback);
 
-    fileWatcher.register('*.js');
+    fileWatcher.registerFile('file.js');
     fileWatcher.watchForChanges.getCall(0).args[1]();
     
     assert.calledOnce(callback);

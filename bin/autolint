@@ -1,15 +1,31 @@
 #!/usr/local/bin/node
 require.paths.push(__dirname + '/../lib');
 
-var linter = require('jslint-linter');
-var overview = require('overview');
-var reporter = require('verbose-reporter');
-var watchForLint = require('watch-for-lint');
-
 var paths = ["lib/*.js", "test/*.js"];
 
-overview.show(Object.create(linter), paths);
+var linter = require('jslint-linter');
+var repository = require('repository').create();
+var watchForLint = require('watch-for-lint');
+var newFileReporter = require('new-file-reporter');
 
-reporter.listenTo(linter);
+//if (verbose) {
+//  newFileReporter.beVerbose();
+//}
 
-watchForLint(linter, paths);
+repository.listenTo(linter);
+
+watchForLint(repository, linter);
+
+newFileReporter.listenTo(repository); // listens to 'newFile' (old concise-reporter)
+//summaryReporter.listenTo(repository); // listens to 'change' and 'completeScan'
+
+repository.scan(paths).then(function () {
+  //fixReporter.listenTo(repository);   // listens to 'errorsFixed'
+  //lintReporter.listenTo(repository);  // listens to 'dirty' (old verbose-reporter)
+  //growlReporter.listenTo(repository); // listens to 'errorsFixed' and 'errorsIntroduced'
+  newFileReporter.beVerbose();
+});
+
+//onInterrupt("Scanning for new files.", function () {
+//  repository.rescan(paths);
+//});

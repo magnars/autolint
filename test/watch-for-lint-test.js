@@ -4,28 +4,30 @@
 var buster = require('buster');
 var assert = buster.assert;
 var fileWatcher = require('file-watcher');
+var EventEmitter = require('events').EventEmitter;
 
 var watchForLint = require('watch-for-lint');
 
 buster.testCase("watchForLint", {
   setUp: function () {
     this.linter = { checkFile: this.stub() };
+    this.stub(fileWatcher, 'registerFile');
+    this.repository = new EventEmitter();
   },
   
-  "should be a function": function () {
+  "should be function": function () {
     assert.isFunction(watchForLint);
   },
   
-  "should check files that change": function () {
-    watchForLint(this.linter, []);
-    fileWatcher.emit('change', 'file1.js');
-    assert.called(this.linter.checkFile);
+  "should register new files to be watched": function () {
+    watchForLint(this.repository, this.linter);
+    this.repository.emit('newFile', 'file1.js');
+    assert.called(fileWatcher.registerFile);
   },
   
-  "should register filePaths with watcher": function () {
-    this.stub(fileWatcher, 'register');
-    watchForLint(this.linter, ['*.js']);
-    assert.called(fileWatcher.register);
-    assert.calledWith(fileWatcher.register, '*.js');
+  "should check changed files for lint": function () {
+    watchForLint(this.repository, this.linter);
+    fileWatcher.emit('change', 'file2.js');
+    assert.called(this.linter.checkFile);
   }
 });
