@@ -7,6 +7,7 @@ var linter = require('jslint-linter');
 var repository = require('repository').create();
 var watchForLint = require('watch-for-lint');
 var newFileReporter = require('new-file-reporter');
+var lintReporter = require('lint-reporter');
 
 //if (verbose) {
 //  newFileReporter.beVerbose();
@@ -21,7 +22,7 @@ newFileReporter.listenTo(repository); // listens to 'newFile' (old concise-repor
 
 repository.scan(paths).then(function () {
   //fixReporter.listenTo(repository);   // listens to 'errorsFixed'
-  //lintReporter.listenTo(repository);  // listens to 'dirty' (old verbose-reporter)
+  lintReporter.listenTo(repository);  // listens to 'dirty' (old verbose-reporter)
   //growlReporter.listenTo(repository); // listens to 'errorsFixed' and 'errorsIntroduced'
   newFileReporter.beVerbose();
 });

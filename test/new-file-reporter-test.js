@@ -42,10 +42,11 @@ buster.testCase("newFileReporter", {
   },
   
   "should print when found a dirty file": function () {
-    ansi.RED = function (string) {
-      return "RED: " + string;
-    };
     this.reporter.handleNewFile('file1.js', [{}, {}]);
     assert.calledWith(sys.puts, 'RED: Found file1.js - 2 errors');
   }
 });
+
+ansi.RED = function (string) {
+  return "RED: " + string;
+};
