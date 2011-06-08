@@ -23,7 +23,7 @@ buster.testCase("repository", {
   "should keep track of files": function () {
     var f = file('file1.js', [{}, {}]);
     this.linter.emit('fileChecked', f);
-    assert.equals(this.repo.files['file1.js'], f);
+    assert.equals(this.repo.files['file1.js'], f)
   },
   
   "dirty event": {

@@ -55,6 +55,14 @@ buster.testCase("summaryReporter", {
   "should create summary": function () {
     assert.equals(this.reporter.getSummary(), "0 clean files, 0 errors in 0 dirty files");
   },
+
+  "should say 'more than' when unknown number of errors": function () {
+    this.repository.files = { 
+      'file1.js': checkedFile.create('file1.js', [{}]),
+      'file2.js': checkedFile.create('file2.js', [{}, {}, {}, null])
+    };
+    assert.equals(this.reporter.getSummary(), "0 clean files, more than 5 errors in 2 dirty files");
+  },
   
   "should print summary without errors in green": function () {
     this.reporter.print();
