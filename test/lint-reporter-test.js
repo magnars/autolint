@@ -38,6 +38,13 @@ buster.testCase("lintReporter", {
       reason: 'Bazinga!'
     }]);
     assert.calledWith(sys.puts, '  line 17 char 9: Bazinga!');
+  },
+  
+  "should handle too many errors": function () {
+    this.repository.emit('dirty', 'file1.js', [{}, {}, null]);
+    assert.called(sys.puts);
+    assert.calledWith(sys.puts, '  and more ...');
+    assert.calledWith(sys.puts, 'RED: \nLint in file1.js, more than 3 errors:');
   }
   
 });

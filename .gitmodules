@@ -10,3 +10,6 @@
 [submodule "node_modules/underscore"]
 	path = node_modules/underscore
 	url = git@github.com:magnars/underscore.git
+[submodule "node_modules/jshint"]
+	path = node_modules/jshint
+	url = https://github.com/jshint/jshint.git
