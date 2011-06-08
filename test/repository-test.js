@@ -5,8 +5,13 @@ var buster = require('buster');
 var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var glob = require('glob');
+var checkedFile = require('checked-file');
 
 var repository = require('repository');
+
+function file(name, errors) {
+  return checkedFile.create(name, errors);
+}
 
 buster.testCase("repository", {
   setUp: function () {
@@ -15,15 +20,10 @@ buster.testCase("repository", {
     this.repo.listenTo(this.linter);
   },
   
-  "should keep track of clean files": function () {
-    this.linter.emit('fileChecked', 'file1.js', []);
-    assert.equals(this.repo.files['file1.js'], []);
-  },
-  
-  "should keep track of dirty files": function () {
-    var errors = [{}, {}];
-    this.linter.emit('fileChecked', 'file2.js', errors);
-    assert.equals(this.repo.files['file2.js'], errors);
+  "should keep track of files": function () {
+    var f = file('file1.js', [{}, {}]);
+    this.linter.emit('fileChecked', f);
+    assert.equals(this.repo.files['file1.js'], f);
   },
   
   "dirty event": {
@@ -33,35 +33,35 @@ buster.testCase("repository", {
     },
     
     "should emit when we have errors": function () {
-      var errors = [{}, {}, {}];
-      this.linter.emit('fileChecked', 'file3.js', errors);
+      var f = file('file3.js', [{}, {}, {}]);
+      this.linter.emit('fileChecked', f);
       assert.called(this.callback);
-      assert.calledWith(this.callback, 'file3.js', errors);
+      assert.calledWith(this.callback, f);
     },
     
     "should not emit without errors": function () {
-      this.linter.emit('fileChecked', 'file4.js', []);
+      this.linter.emit('fileChecked', file('file4.js', []));
       assert.notCalled(this.callback);
     }
   },
   
   "newFile event": {
     setUp: function () {
-      this.repo.files['old-file.js'] = [];
+      this.repo.files['old-file.js'] = file('old-file.js', []);
       this.callback = this.stub();
       this.repo.on('newFile', this.callback);
     },
   
     "should not emit event for old files": function () {
-      this.linter.emit('fileChecked', 'old-file.js', []);
+      this.linter.emit('fileChecked', file('old-file.js', []));
       assert.notCalled(this.callback);
     },
   
     "should emit event for new files": function () {
-      var errors = [{}];
-      this.linter.emit('fileChecked', 'new-file.js', errors);
+      var f = file('new-file.js', [{}]);
+      this.linter.emit('fileChecked', f);
       assert.called(this.callback);
-      assert.calledWith(this.callback, 'new-file.js', errors);
+      assert.calledWith(this.callback, f);
     }
   },
   
@@ -69,19 +69,20 @@ buster.testCase("repository", {
     setUp: function () {
       this.oldError = 'old';
       this.newError = 'new';
-      this.repo.files['file.js'] = [this.oldError];
+      this.repo.files['file.js'] = file('file.js', [this.oldError]);
       this.callback = this.stub();
       this.repo.on('errorsIntroduced', this.callback);
     },
     
     "should emit event with new error": function () {
-      this.linter.emit('fileChecked', 'file.js', [this.oldError, this.newError]);
+      var f = file('file.js', [this.oldError, this.newError]);
+      this.linter.emit('fileChecked', f);
       assert.called(this.callback);
-      assert.calledWith(this.callback, 'file.js', [this.newError]);
+      assert.calledWith(this.callback, f, [this.newError]);
     },
     
     "should not emit event without new errors": function () {
-      this.linter.emit('fileChecked', 'file.js', [this.oldError]);
+      this.linter.emit('fileChecked', file('file.js', [this.oldError]));
       assert.notCalled(this.callback);
     }
   },
@@ -90,38 +91,40 @@ buster.testCase("repository", {
     setUp: function () {
       this.error1 = 'error1';
       this.error2 = 'error2';
-      this.repo.files['file.js'] = [this.error1, this.error2];
+      this.repo.files['file.js'] = file('file.js', [this.error1, this.error2]);
       this.callback = this.stub();
       this.repo.on('errorsFixed', this.callback);
     },
     
     "should emit when error fixed": function () {
-      this.linter.emit('fileChecked', 'file.js', [this.error2]);
+      var f = file('file.js', [this.error2]);
+      this.linter.emit('fileChecked', f);
       assert.calledOnce(this.callback);
-      assert.calledWith(this.callback, 'file.js', [this.error1], [this.error2]);
+      assert.calledWith(this.callback, f, [this.error1]);
     },
     
     "should not emit when nothing fixed": function () {
-      this.linter.emit('fileChecked', 'file.js', [this.error1, this.error2]);
+      this.linter.emit('fileChecked', file('file.js', [this.error1, this.error2]));
       assert.notCalled(this.callback);
     }
   },
   
   "change event": {
     setUp: function () {
-      this.repo.files['file.js'] = [{}, {}];
+      this.repo.files['file.js'] = file('file.js', [{}, {}]);
       this.callback = this.stub();
       this.repo.on('change', this.callback);
     },
     
     "should emit when number of errors have changed": function () {
-      this.linter.emit('fileChecked', 'file.js', [{}]);
+      var f = file('file.js', [{}]);
+      this.linter.emit('fileChecked', f);
       assert.called(this.callback);
-      assert.calledWith(this.callback, 'file.js');
+      assert.calledWith(this.callback, f);
     },
     
     "should not emit when numbers are the same": function () {
-      this.linter.emit('fileChecked', 'file.js', [{}, {}]);
+      this.linter.emit('fileChecked', file('file.js', [{}, {}]));
       assert.notCalled(this.callback);
     }
   },

@@ -6,6 +6,7 @@ var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var sys = require('sys');
 var ansi = require('ansi');
+var checkedFile = require('checked-file');
 
 var summaryReporter = require('summary-reporter');
 
@@ -28,25 +29,25 @@ buster.testCase("summaryReporter", {
   
   "should count number of clean files": function () {
     this.repository.files = {
-      'file1.js': [],
-      'file2.js': [],
-      'file3.js': [{}]
+      'file1.js': checkedFile.create('file1.js', []),
+      'file2.js': checkedFile.create('file2.js', []),
+      'file3.js': checkedFile.create('file3.js', [{}])
     };
     assert.equals(this.reporter.numCleanFiles(), 2);
   },
   
   "should count number of dirty files": function () {
     this.repository.files = {
-      'file1.js': [],
-      'file2.js': [{}]
+      'file1.js': checkedFile.create('file1.js', []),
+      'file2.js': checkedFile.create('file2.js', [{}])
     };
     assert.equals(this.reporter.numDirtyFiles(), 1);
   },
   
   "should count number of errors": function () {
     this.repository.files = {
-      'file1.js': [{}],
-      'file2.js': [{}, {}]
+      'file1.js': checkedFile.create('file1.js', [{}]),
+      'file2.js': checkedFile.create('file2.js', [{}, {}])
     };
     assert.equals(this.reporter.numErrors(), 3);
   },
@@ -62,7 +63,9 @@ buster.testCase("summaryReporter", {
   },
   
   "should print summary with errors in red": function () {
-    this.repository.files = { 'file1.js': [{}] };
+    this.repository.files = { 
+      'file1.js': checkedFile.create('file1.js', [{}])
+    };
     this.reporter.print();
     assert.calledOnce(sys.puts);
     assert.calledWith(sys.puts, "\nRED: 0 clean files, 1 error in 1 dirty file");

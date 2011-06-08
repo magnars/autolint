@@ -6,6 +6,7 @@ var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var sys = require('sys');
 var ansi = require('ansi');
+var checkedFile = require('checked-file');
 
 var lintReporter = require('lint-reporter');
 
@@ -26,25 +27,20 @@ buster.testCase("lintReporter", {
   },
   
   "should print filename with number of errors": function () {
-    this.repository.emit('dirty', 'file1.js', [{}, {}]);
+    var file = checkedFile.create('file1.js', [{}, {}]);
+    this.repository.emit('dirty', file);
     assert.called(sys.puts);
     assert.calledWith(sys.puts, 'RED: \nLint in file1.js, 2 errors:');
   },
   
   "should print error": function () {
-    this.repository.emit('dirty', 'file1.js', [{
+    var file = checkedFile.create('file1.js', [{
       line: 17,
       character: 9,
       reason: 'Bazinga!'
     }]);
+    this.repository.emit('dirty', file);
     assert.calledWith(sys.puts, '  line 17 char 9: Bazinga!');
-  },
-  
-  "should handle too many errors": function () {
-    this.repository.emit('dirty', 'file1.js', [{}, {}, null]);
-    assert.called(sys.puts);
-    assert.calledWith(sys.puts, '  and more ...');
-    assert.calledWith(sys.puts, 'RED: \nLint in file1.js, more than 3 errors:');
   }
   
 });

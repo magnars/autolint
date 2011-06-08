@@ -6,6 +6,7 @@ var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var sys = require('sys');
 var ansi = require('ansi');
+var checkedFile = require('checked-file');
 
 var cleanReporter = require('clean-reporter');
 
@@ -25,16 +26,18 @@ buster.testCase("cleanReporter", {
   },
   
   "should congratulate on cleaning up a file": function () {
+    var file = checkedFile.create('file1.js', []);
     this.reporter.listenTo(this.repository);
-    this.repository.emit('errorsFixed', 'file1.js', [{}], []);
+    this.repository.emit('errorsFixed', file, [{}]);
     
     assert.called(sys.puts);
     assert.calledWith(sys.puts, 'GREEN: \nNice! file1.js is clean.');
   },
   
   "should not congratulate when errors remain": function () {
+    var file = checkedFile.create('file1.js', [{}]);
     this.reporter.listenTo(this.repository);
-    this.repository.emit('errorsFixed', 'file1.js', [{}], [{}]);
+    this.repository.emit('errorsFixed', file, [{}]);
     assert.notCalled(sys.puts);
   }
 });

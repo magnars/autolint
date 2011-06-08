@@ -21,8 +21,9 @@ buster.testCase("watchForLint", {
   
   "should register new files to be watched": function () {
     watchForLint(this.repository, this.linter);
-    this.repository.emit('newFile', 'file1.js');
+    this.repository.emit('newFile', {name: 'file1.js'});
     assert.called(fileWatcher.registerFile);
+    assert.calledWith(fileWatcher.registerFile, 'file1.js');
   },
   
   "should check changed files for lint": function () {
