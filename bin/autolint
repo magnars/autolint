@@ -14,16 +14,17 @@ var newFileReporter = require('new-file-reporter').create(repository);
 var lintReporter = require('lint-reporter').create(repository);
 var cleanReporter = require('clean-reporter').create(repository);
 var summaryReporter = require('summary-reporter').create(repository);
+var growlReporter = require('growl-reporter').create(repository);
 
 repository.listen();
+newFileReporter.listen();
 watchForLint(repository, linter);
 
-newFileReporter.listen();
 lintScanner.scan(paths).then(function () {
   newFileReporter.beVerbose();
   cleanReporter.listen();
   lintReporter.listen();
-  //growlReporter.listen(); // listens to 'errorsFixed' and 'errorsIntroduced'
+  growlReporter.listen();
   summaryReporter.listen();
   summaryReporter.print();
 });
