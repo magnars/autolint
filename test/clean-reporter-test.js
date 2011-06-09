@@ -12,22 +12,22 @@ var cleanReporter = require('clean-reporter');
 
 buster.testCase("cleanReporter", {
   setUp: function () {
-    this.reporter = Object.create(cleanReporter);
     this.stub(sys, 'puts');
     this.repository = new EventEmitter();
+    this.reporter = cleanReporter.create(this.repository);
   },
   
   "should be an object": function () {
     assert.isObject(cleanReporter);
   },
   
-  "should have listenTo method": function () {
-    assert.isFunction(cleanReporter.listenTo);
+  "should have listen method": function () {
+    assert.isFunction(cleanReporter.listen);
   },
   
   "should congratulate on cleaning up a file": function () {
     var file = checkedFile.create('file1.js', []);
-    this.reporter.listenTo(this.repository);
+    this.reporter.listen();
     this.repository.emit('errorsFixed', file, [{}]);
     
     assert.called(sys.puts);
@@ -36,7 +36,7 @@ buster.testCase("cleanReporter", {
   
   "should not congratulate when errors remain": function () {
     var file = checkedFile.create('file1.js', [{}]);
-    this.reporter.listenTo(this.repository);
+    this.reporter.listen();
     this.repository.emit('errorsFixed', file, [{}]);
     assert.notCalled(sys.puts);
   }

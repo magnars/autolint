@@ -3,27 +3,28 @@ require.paths.push(__dirname + '/../lib');
 
 var paths = process.argv.slice(2);
 
-var linter = require('jslint-linter');
-var repository = require('repository').create();
-var newFileReporter = require('new-file-reporter');
-var lintReporter = require('lint-reporter');
-var cleanReporter = require('clean-reporter');
-var summaryReporter = require('summary-reporter');
-var lintScanner = require('lint-scanner').create(linter);
 var watchForLint = require('watch-for-lint');
 var onInterrupt = require('on-interrupt');
 
-repository.listenTo(linter);
+var linter = require('jslint-linter');
+var lintScanner = require('lint-scanner').create(linter);
+var repository = require('repository').create(linter);
+
+var newFileReporter = require('new-file-reporter').create(repository);
+var lintReporter = require('lint-reporter').create(repository);
+var cleanReporter = require('clean-reporter').create(repository);
+var summaryReporter = require('summary-reporter').create(repository);
+
+repository.listen();
 watchForLint(repository, linter);
 
-newFileReporter.listenTo(repository);
-
+newFileReporter.listen();
 lintScanner.scan(paths).then(function () {
   newFileReporter.beVerbose();
-  cleanReporter.listenTo(repository);
-  lintReporter.listenTo(repository);
-  //growlReporter.listenTo(repository); // listens to 'errorsFixed' and 'errorsIntroduced'
-  summaryReporter.listenTo(repository);
+  cleanReporter.listen();
+  lintReporter.listen();
+  //growlReporter.listen(); // listens to 'errorsFixed' and 'errorsIntroduced'
+  summaryReporter.listen();
   summaryReporter.print();
 });
 

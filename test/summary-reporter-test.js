@@ -15,16 +15,12 @@ buster.testCase("summaryReporter", {
     this.stub(sys, 'puts');
     this.repository = new EventEmitter();
     this.repository.files = {};
-    this.reporter = Object.create(summaryReporter);
-    this.reporter.listenTo(this.repository);
+    this.reporter = summaryReporter.create(this.repository);
+    this.reporter.listen();
   },
   
   "should be an object": function () {
     assert.isObject(summaryReporter);
-  },
-  
-  "should have listenTo method": function () {
-    assert.isFunction(summaryReporter.listenTo);
   },
   
   "should count number of clean files": function () {

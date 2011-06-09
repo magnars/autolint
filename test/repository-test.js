@@ -16,8 +16,8 @@ function file(name, errors) {
 buster.testCase("repository", {
   setUp: function () {
     this.linter = new EventEmitter();
-    this.repo = repository.create();
-    this.repo.listenTo(this.linter);
+    this.repo = repository.create(this.linter);
+    this.repo.listen();
   },
   
   "should keep track of files": function () {

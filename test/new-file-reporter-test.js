@@ -12,20 +12,19 @@ var newFileReporter = require('new-file-reporter');
 
 buster.testCase("newFileReporter", {
   setUp: function () {
-    this.reporter = Object.create(newFileReporter);
+    this.repository = new EventEmitter();
+    this.reporter = newFileReporter.create(this.repository);
     this.stub(sys, 'puts');
   },
   
-  "should have listenTo method": function () {
-    assert.isFunction(newFileReporter.listenTo);
+  "should have listen method": function () {
+    assert.isFunction(newFileReporter.listen);
   },
   
   "should handle newFile event": function () {
-    var repository = new EventEmitter();
     this.stub(this.reporter, 'handleNewFile');
-
-    this.reporter.listenTo(repository);
-    repository.emit('newFile');
+    this.reporter.listen();
+    this.repository.emit('newFile');
 
     assert.called(this.reporter.handleNewFile);
   },

@@ -12,18 +12,14 @@ var lintReporter = require('lint-reporter');
 
 buster.testCase("lintReporter", {
   setUp: function () {
-    this.reporter = Object.create(lintReporter);
     this.repository = new EventEmitter();
-    this.reporter.listenTo(this.repository);
+    this.reporter = lintReporter.create(this.repository);
+    this.reporter.listen();
     this.stub(sys, 'puts');
   },
   
   "should be an object": function () {
     assert.isObject(lintReporter);
-  },
-  
-  "should have listenTo method": function () {
-    assert.isFunction(lintReporter.listenTo);
   },
   
   "should print filename with number of errors": function () {
