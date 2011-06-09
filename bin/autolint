@@ -28,10 +28,8 @@ lintScanner.scan(paths).then(function () {
   summaryReporter.print();
 });
 
-onInterrupt("Scanning for new files.", function () {
-  lintReporter.mute();
+onInterrupt("Checking all files.", function () {
   lintScanner.scan(paths).then(function () {
     summaryReporter.print();
-    lintReporter.unmute();
   });
 });
