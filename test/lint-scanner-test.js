@@ -54,7 +54,7 @@ buster.testCase("lintScanner", {
       assert.equals(this.scanner.filterExcludedFiles(files), ['file1.js', 'lib/file2.js']);
     },
     
-    "should exclude emacs backup files (starts with hash)": function () {
+    "should exclude emacs autosave files (starts with hash)": function () {
       var files = ['file1.js', '#file1.js'];
       assert.equals(this.scanner.filterExcludedFiles(files), ['file1.js']);
     },
@@ -62,6 +62,11 @@ buster.testCase("lintScanner", {
     "shouldn't be baffled by preceding directories": function () {
       var files = ['lib/file1.js', 'lib/#file1.js'];
       assert.equals(this.scanner.filterExcludedFiles(files), ['lib/file1.js']);
+    },
+    
+    "should exclude emacs backup files (starts with tilde)": function () {
+      var files = ['test/file1.js', 'test/~file1.js'];
+      assert.equals(this.scanner.filterExcludedFiles(files), ['test/file1.js']);
     },
     
     "should exclude system files (starts with .)": function () {
