@@ -5,12 +5,13 @@ var paths = process.argv.slice(2);
 
 var linter = require('jslint-linter');
 var repository = require('repository').create();
-var watchForLint = require('watch-for-lint');
 var newFileReporter = require('new-file-reporter');
 var lintReporter = require('lint-reporter');
 var cleanReporter = require('clean-reporter');
 var summaryReporter = require('summary-reporter');
 var lintScanner = require('lint-scanner').create(linter);
+var watchForLint = require('watch-for-lint');
+var onInterrupt = require('on-interrupt');
 
 repository.listenTo(linter);
 watchForLint(repository, linter);
@@ -18,6 +19,7 @@ watchForLint(repository, linter);
 newFileReporter.listenTo(repository);
 
 lintScanner.scan(paths).then(function () {
+  newFileReporter.beVerbose();
   cleanReporter.listenTo(repository);
   lintReporter.listenTo(repository);
   //growlReporter.listenTo(repository); // listens to 'errorsFixed' and 'errorsIntroduced'
@@ -25,7 +27,10 @@ lintScanner.scan(paths).then(function () {
   summaryReporter.print();
 });
 
-//onInterrupt("Scanning for new files.", function () {
-//  newFileReporter.beVerbose();
-//  repository.rescan(paths);
-//});
+onInterrupt("Scanning for new files.", function () {
+  lintReporter.mute();
+  lintScanner.scan(paths).then(function () {
+    summaryReporter.print();
+    lintReporter.unmute();
+  });
+});

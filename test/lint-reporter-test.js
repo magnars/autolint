@@ -41,6 +41,21 @@ buster.testCase("lintReporter", {
     }]);
     this.repository.emit('dirty', file);
     assert.calledWith(sys.puts, '  line 17 char 9: Bazinga!');
+  },
+  
+  "should not print after a mute": function () {
+    var file = checkedFile.create('file1.js', [{}, {}]);
+    this.reporter.mute();
+    this.repository.emit('dirty', file);
+    assert.notCalled(sys.puts);
+  },
+  
+  "should start printing again after unmute": function () {
+    var file = checkedFile.create('file1.js', [{}, {}]);
+    this.reporter.mute();
+    this.reporter.unmute();
+    this.repository.emit('dirty', file);
+    assert.called(sys.puts);
   }
   
 });

@@ -48,6 +48,28 @@ buster.testCase("lintScanner", {
     }
   },
   
+  "filterExcludedFiles": {
+    "should keep normal files": function () {
+      var files = ['file1.js', 'lib/file2.js'];
+      assert.equals(this.scanner.filterExcludedFiles(files), ['file1.js', 'lib/file2.js']);
+    },
+    
+    "should exclude emacs backup files (starts with hash)": function () {
+      var files = ['file1.js', '#file1.js'];
+      assert.equals(this.scanner.filterExcludedFiles(files), ['file1.js']);
+    },
+    
+    "shouldn't be baffled by preceding directories": function () {
+      var files = ['lib/file1.js', 'lib/#file1.js'];
+      assert.equals(this.scanner.filterExcludedFiles(files), ['lib/file1.js']);
+    },
+    
+    "should exclude system files (starts with .)": function () {
+      var files = ['test/file1.js', 'test/.git'];
+      assert.equals(this.scanner.filterExcludedFiles(files), ['test/file1.js']);
+    }
+  },
+  
   "checkFiles": {
     setUp: function () {
       this.promise = buster.promise.create();
@@ -90,7 +112,7 @@ buster.testCase("lintScanner", {
     
     "should check all files": function () {
       this.scanner.scan();
-      this.findPromise.resolve(['file1.js']);
+      this.findPromise.resolve(['file1.js', '#file1.js']);
       assert.called(this.scanner.checkFiles);
       assert.calledWith(this.scanner.checkFiles, ['file1.js']);
     },
