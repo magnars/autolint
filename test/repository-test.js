@@ -23,7 +23,7 @@ buster.testCase("repository", {
   "should keep track of files": function () {
     var f = file('file1.js', [{}, {}]);
     this.linter.emit('fileChecked', f);
-    assert.equals(this.repo.files['file1.js'], f)
+    assert.equals(this.repo.files['file1.js'], f);
   },
   
   "dirty event": {
@@ -126,88 +126,6 @@ buster.testCase("repository", {
     "should not emit when numbers are the same": function () {
       this.linter.emit('fileChecked', file('file.js', [{}, {}]));
       assert.notCalled(this.callback);
-    }
-  },
-  
-  "findAllFiles": {
-    setUp: function () {
-      this.stub(glob, 'glob');
-    },
-        
-    "should use glob to find files": function () {
-      this.repo.findAllFiles(['*.js']);
-      assert.calledOnce(glob.glob);
-      assert.calledWith(glob.glob, '*.js');
-    },
-
-    "should find all files": function () {
-      glob.glob.withArgs('lib/*.js').yields(null, ['file1.js']);
-      glob.glob.withArgs('test/*.js').yields(null, ['file2.js', 'file3.js']);
-      this.repo.findAllFiles(['lib/*.js', 'test/*.js']).then(function (files) {
-        assert.equals(files, ['file1.js', 'file2.js', 'file3.js']);
-      });
-    }
-  },
-  
-  "checkFiles": {
-    setUp: function () {
-      this.promise = buster.promise.create();
-      this.linter.checkFile = this.stub().returns(this.promise);
-    },
-    
-    "should check files with linter": function () {
-      this.repo.checkFiles(['file.js']);
-      assert.calledOnce(this.linter.checkFile);
-    },
-    
-    "should return promise": function () {
-      var promise = this.repo.checkFiles(['file.js']);
-      assert.isFunction(promise.then);
-    },
-    
-    "should resolve promise when all files are checked": function () {
-      var callback = this.stub();
-
-      this.repo.checkFiles(['file.js']).then(callback);
-      assert.notCalled(callback);
-      this.promise.resolve();
-      assert.called(callback);
-    }
-  },
-  
-  "scan": {
-    setUp: function () {
-      this.findPromise = buster.promise.create();
-      this.checkPromise = buster.promise.create();
-      this.stub(this.repo, 'findAllFiles').returns(this.findPromise);
-      this.stub(this.repo, 'checkFiles').returns(this.checkPromise);
-    },
-    
-    "should find all files": function () {
-      this.repo.scan(['*.js']);
-      assert.called(this.repo.findAllFiles);
-      assert.calledWith(this.repo.findAllFiles, ['*.js']);
-    },
-    
-    "should check all files": function () {
-      this.repo.scan();
-      this.findPromise.resolve(['file1.js']);
-      assert.called(this.repo.checkFiles);
-      assert.calledWith(this.repo.checkFiles, ['file1.js']);
-    },
-    
-    "should return promise": function () {
-      assert.isFunction(this.repo.scan().then);
-    },
-    
-    "should resolve promise when all files checked": function () {
-      var callback = this.stub();
-      this.repo.scan().then(callback);
-
-      this.findPromise.resolve();
-      this.checkPromise.resolve();
-      
-      assert.called(callback);
     }
   }
 });

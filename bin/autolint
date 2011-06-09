@@ -10,13 +10,14 @@ var newFileReporter = require('new-file-reporter');
 var lintReporter = require('lint-reporter');
 var cleanReporter = require('clean-reporter');
 var summaryReporter = require('summary-reporter');
+var lintScanner = require('lint-scanner').create(linter);
 
 repository.listenTo(linter);
 watchForLint(repository, linter);
 
 newFileReporter.listenTo(repository);
 
-repository.scan(paths).then(function () {
+lintScanner.scan(paths).then(function () {
   cleanReporter.listenTo(repository);
   lintReporter.listenTo(repository);
   //growlReporter.listenTo(repository); // listens to 'errorsFixed' and 'errorsIntroduced'

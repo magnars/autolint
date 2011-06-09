@@ -1,0 +1,112 @@
+/*jslint indent: 2, onevar: false */
+/*global require */
+
+var buster = require('buster');
+var assert = buster.assert;
+var EventEmitter = require('events').EventEmitter;
+var glob = require('glob');
+
+var lintScanner = require('lint-scanner');
+
+buster.testCase("lintScanner", {
+  setUp: function () {
+    this.linter = new EventEmitter();
+    this.scanner = lintScanner.create(this.linter);
+  },
+  
+  "should be an object": function () {
+    assert.isObject(lintScanner);
+  },
+  
+  "should have create method": function () {
+    assert.isFunction(lintScanner.create);
+  },
+  
+  "should complain about missing linter": function () {
+    assert.exception(function () {
+      lintScanner.create();
+    });
+  },
+  
+  "findAllFiles": {
+    setUp: function () {
+      this.stub(glob, 'glob');
+    },
+        
+    "should use glob to find files": function () {
+      this.scanner.findAllFiles(['*.js']);
+      assert.calledOnce(glob.glob);
+      assert.calledWith(glob.glob, '*.js');
+    },
+
+    "should find all files": function () {
+      glob.glob.withArgs('lib/*.js').yields(null, ['file1.js']);
+      glob.glob.withArgs('test/*.js').yields(null, ['file2.js', 'file3.js']);
+      this.scanner.findAllFiles(['lib/*.js', 'test/*.js']).then(function (files) {
+        assert.equals(files, ['file1.js', 'file2.js', 'file3.js']);
+      });
+    }
+  },
+  
+  "checkFiles": {
+    setUp: function () {
+      this.promise = buster.promise.create();
+      this.linter.checkFile = this.stub().returns(this.promise);
+    },
+    
+    "should check files with linter": function () {
+      this.scanner.checkFiles(['file.js']);
+      assert.calledOnce(this.linter.checkFile);
+    },
+    
+    "should return promise": function () {
+      var promise = this.scanner.checkFiles(['file.js']);
+      assert.isFunction(promise.then);
+    },
+    
+    "should resolve promise when all files are checked": function () {
+      var callback = this.stub();
+
+      this.scanner.checkFiles(['file.js']).then(callback);
+      assert.notCalled(callback);
+      this.promise.resolve();
+      assert.called(callback);
+    }
+  },
+  
+  "scan": {
+    setUp: function () {
+      this.findPromise = buster.promise.create();
+      this.checkPromise = buster.promise.create();
+      this.stub(this.scanner, 'findAllFiles').returns(this.findPromise);
+      this.stub(this.scanner, 'checkFiles').returns(this.checkPromise);
+    },
+    
+    "should find all files": function () {
+      this.scanner.scan(['*.js']);
+      assert.called(this.scanner.findAllFiles);
+      assert.calledWith(this.scanner.findAllFiles, ['*.js']);
+    },
+    
+    "should check all files": function () {
+      this.scanner.scan();
+      this.findPromise.resolve(['file1.js']);
+      assert.called(this.scanner.checkFiles);
+      assert.calledWith(this.scanner.checkFiles, ['file1.js']);
+    },
+    
+    "should return promise": function () {
+      assert.isFunction(this.scanner.scan().then);
+    },
+    
+    "should resolve promise when all files checked": function () {
+      var callback = this.stub();
+      this.scanner.scan().then(callback);
+
+      this.findPromise.resolve();
+      this.checkPromise.resolve();
+      
+      assert.called(callback);
+    }
+  }
+});
