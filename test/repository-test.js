@@ -67,15 +67,23 @@ buster.testCase("repository", {
   
   "errorsIntroduced event": {
     setUp: function () {
-      this.oldError = 'old';
-      this.newError = 'new';
+      this.oldError = {
+        line: 9,
+        character: 1,
+        reason: 'Whatever'
+      };
+      this.newError = {
+        line: 11,
+        character: 9,
+        reason: 'You screwed up, dude'
+      };
       this.repo.files['file.js'] = file('file.js', [this.oldError]);
       this.callback = this.stub();
       this.repo.on('errorsIntroduced', this.callback);
     },
     
     "should emit event with new error": function () {
-      var f = file('file.js', [this.oldError, this.newError]);
+      var f = file('file.js', [Object.create(this.oldError), this.newError]);
       this.linter.emit('fileChecked', f);
       assert.called(this.callback);
       assert.calledWith(this.callback, f, [this.newError]);
@@ -84,27 +92,64 @@ buster.testCase("repository", {
     "should not emit event without new errors": function () {
       this.linter.emit('fileChecked', file('file.js', [this.oldError]));
       assert.notCalled(this.callback);
+    },
+    
+    "should ignore null errors": function () {
+      var f = file('file.js', [Object.create(this.oldError), this.newError, null]);
+      this.linter.emit('fileChecked', f);
+      assert.calledWith(this.callback, f, [this.newError]);
+    },
+    
+    "should not blame for introducing errors when unknown errors exist": function () {
+      this.repo.files['file.js'] = file('file.js', [this.oldError, null]);
+      var f = file('file.js', [Object.create(this.oldError), this.newError]);
+      this.linter.emit('fileChecked', f);
+      assert.notCalled(this.callback);
     }
   },
   
   "errorsFixed event": {
     setUp: function () {
-      this.error1 = 'error1';
-      this.error2 = 'error2';
+      this.error1 = {
+        line: 7,
+        character: 3,
+        reason: 'Bah'
+      };
+      this.error2 = {
+        line: 3,
+        character: 19,
+        reason: 'Humbug'
+      };
       this.repo.files['file.js'] = file('file.js', [this.error1, this.error2]);
       this.callback = this.stub();
       this.repo.on('errorsFixed', this.callback);
     },
     
     "should emit when error fixed": function () {
-      var f = file('file.js', [this.error2]);
+      var f = file('file.js', [Object.create(this.error2)]);
       this.linter.emit('fileChecked', f);
       assert.calledOnce(this.callback);
       assert.calledWith(this.callback, f, [this.error1]);
     },
     
     "should not emit when nothing fixed": function () {
-      this.linter.emit('fileChecked', file('file.js', [this.error1, this.error2]));
+      this.linter.emit('fileChecked', file('file.js', [
+        Object.create(this.error1), 
+        Object.create(this.error2)
+      ]));
+      assert.notCalled(this.callback);
+    },
+    
+    "should emit also when we have an unknown number of errors": function () {
+      this.repo.files['file.js'] = file('file.js', [this.error1, this.error2, null]);
+      var f = file('file.js', [Object.create(this.error2), null]);
+      this.linter.emit('fileChecked', f);
+      assert.calledOnce(this.callback);
+    },
+    
+    "should not emit when we introduce an unknown number of errors": function () {
+      var f = file('file.js', [Object.create(this.error2), null]);
+      this.linter.emit('fileChecked', f);
       assert.notCalled(this.callback);
     }
   },
