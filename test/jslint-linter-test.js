@@ -14,6 +14,7 @@ buster.testCase("jslint-linter", {
     fs.readFile.yields(null, 'file contents');
     this.stub(jslint, 'check').returns(true);
     this.callback = this.stub();
+    this.linter = linter.create({});
   },
   
   "should be object": function () {
@@ -25,19 +26,21 @@ buster.testCase("jslint-linter", {
   },
   
   "should read file": function () {
-    linter.checkFile('file.js');
+    this.linter.checkFile('file.js');
     assert.calledOnce(fs.readFile);
     assert.calledWith(fs.readFile, 'file.js');
   },
   
-  "should check file with jslint": function () {
-    linter.checkFile('file.js');
+  "should check file with jslint and options": function () {
+    var options = {};
+    this.linter = linter.create(options);
+    this.linter.checkFile('file.js');
     assert.calledOnce(jslint.check);
-    assert.calledWith(jslint.check, 'file contents');
+    assert.calledWith(jslint.check, 'file contents', options);
   },
   
   "should return promise": function () {
-    assert.isFunction(linter.checkFile('file.js').then);
+    assert.isFunction(this.linter.checkFile('file.js').then);
   },
   
   "if check fails": {
@@ -47,14 +50,14 @@ buster.testCase("jslint-linter", {
     },
     
     "should emit fileChecked event": function () {
-      linter.on('fileChecked', this.callback);
-      linter.checkFile('file.js');
+      this.linter.on('fileChecked', this.callback);
+      this.linter.checkFile('file.js');
       assert.calledOnce(this.callback);
     },
     
     "should pass file with event": function () {
-      linter.on('fileChecked', this.callback);
-      linter.checkFile('file.js');
+      this.linter.on('fileChecked', this.callback);
+      this.linter.checkFile('file.js');
       var args = this.callback.getCall(0).args;
       assert.match(args[0], {
         name: 'file.js',
@@ -64,12 +67,12 @@ buster.testCase("jslint-linter", {
     
     "should resolve promise": function () {
       var callback = this.stub();
-      linter.checkFile('file.js').then(callback);
+      this.linter.checkFile('file.js').then(callback);
       assert.called(callback);
     },
     
     "should resolve promise with errors": function () {
-      linter.checkFile('file.js').then(function (errors) {
+      this.linter.checkFile('file.js').then(function (errors) {
         assert.equals(errors, [{}]);
       });
     }
@@ -81,20 +84,20 @@ buster.testCase("jslint-linter", {
     },
     
     "should emit fileChecked event": function () {
-      linter.on('fileChecked', this.callback);
+      this.linter.on('fileChecked', this.callback);
       
-      linter.checkFile('file.js');
+      this.linter.checkFile('file.js');
       assert.calledOnce(this.callback);
     },
 
     "should resolve promise": function () {
       var callback = this.stub();
-      linter.checkFile('file.js').then(callback);
+      this.linter.checkFile('file.js').then(callback);
       assert.called(callback);
     },
     
     "should resolve promise with empty array": function () {
-      linter.checkFile('file.js').then(function (errors) {
+      this.linter.checkFile('file.js').then(function (errors) {
         assert.equals(errors, []);
       });
     }

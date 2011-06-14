@@ -1,3 +1,5 @@
 Todo
 ----
 * replace sys.puts(ansi.RED) with dedicated object for printing
+
+* clean-reporter should report next file to clean up

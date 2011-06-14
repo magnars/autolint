@@ -1,0 +1,9 @@
+{
+  "paths": [
+    "test/*.js", 
+    "lib/*.js"
+  ],
+  "options": {
+    "node": true
+  }
+}

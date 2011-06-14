@@ -1,36 +1,7 @@
 #!/usr/local/bin/node
 require.paths.push(__dirname + '/../lib');
 
-var paths = process.argv.slice(2);
+var loadConfiguration = require('load-configuration');
+var startAutolint = require('start-autolint');
 
-var watchForLint = require('watch-for-lint');
-var onInterrupt = require('on-interrupt');
-
-var linter = require('jslint-linter');
-var lintScanner = require('lint-scanner').create(linter);
-var repository = require('repository').create(linter);
-
-var newFileReporter = require('new-file-reporter').create(repository);
-var lintReporter = require('lint-reporter').create(repository);
-var cleanReporter = require('clean-reporter').create(repository);
-var summaryReporter = require('summary-reporter').create(repository);
-var growlReporter = require('growl-reporter').create(repository);
-
-repository.listen();
-newFileReporter.listen();
-watchForLint(repository, linter);
-
-lintScanner.scan(paths).then(function () {
-  newFileReporter.beVerbose();
-  cleanReporter.listen();
-  lintReporter.listen();
-  growlReporter.listen();
-  summaryReporter.listen();
-  summaryReporter.print();
-});
-
-onInterrupt("Checking all files.", function () {
-  lintScanner.scan(paths).then(function () {
-    summaryReporter.print();
-  });
-});
+loadConfiguration(process.argv.slice(2)).then(startAutolint);

@@ -42,11 +42,7 @@ buster.testCase("growlReporter", {
       line: 17,
       character: 9,
       reason: 'Booyah!'
-    }, {
-      line: 19,
-      character: 0,
-      reason: 'Bah, humbug!'
-    }]);
+    }, {}]);
     
     assert.calledWith(growl.notify, 'First error at line 17 char 9:\nBooyah!');
   },
