@@ -77,6 +77,12 @@ buster.testCase("lintScanner", {
     "should not exclude files in parent directories (starts with ..)": function () {
       var files = ['../test/file1.js'];
       assert.equals(this.scanner.filterExcludedFiles(files), ['../test/file1.js']);
+    },
+    
+    "should exclude files from configuration": function () {
+      var scanner = lintScanner.create(this.linter, [/jquery/]);
+      var files = ['file.js', 'jquery.js', 'color.jquery.js'];
+      assert.equals(scanner.filterExcludedFiles(files), ['file.js']);
     }
   },
   

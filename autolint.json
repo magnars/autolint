@@ -1,6 +1,6 @@
 {
   "paths": [
-    "test/*.js", 
+    "test/*.js",
     "lib/*.js"
   ],
   "options": {
