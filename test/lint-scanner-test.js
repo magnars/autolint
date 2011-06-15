@@ -72,6 +72,11 @@ buster.testCase("lintScanner", {
     "should exclude system files (starts with .)": function () {
       var files = ['test/file1.js', 'test/.git'];
       assert.equals(this.scanner.filterExcludedFiles(files), ['test/file1.js']);
+    },
+    
+    "should not exclude files in parent directories (starts with ..)": function () {
+      var files = ['../test/file1.js'];
+      assert.equals(this.scanner.filterExcludedFiles(files), ['../test/file1.js']);
     }
   },
   
