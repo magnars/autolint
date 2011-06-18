@@ -26,6 +26,23 @@ buster.testCase("repository", {
     assert.equals(this.repo.files['file1.js'], f);
   },
   
+  "when getting files": {
+    setUp: function () {
+      this.clean = file('clean.js', []);
+      this.dirty = file('dirty.js', [{}]);
+      this.repo.files['clean.js'] = this.clean;
+      this.repo.files['dirty.js'] = this.dirty;
+    },
+    
+    "should get just clean files": function () {
+      assert.equals(this.repo.getCleanFiles(), [this.clean]);
+    },
+
+    "should get just dirty files": function () {
+      assert.equals(this.repo.getDirtyFiles(), [this.dirty]);
+    }
+  },
+  
   "dirty event": {
     setUp: function () {
       this.callback = this.stub();
