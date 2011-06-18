@@ -56,9 +56,15 @@ buster.testCase("lintScanner", {
       },
       
       "should print warning": function () {
+        this.scanner.findAllFiles(['lib/*.js']);
+        assert.called(sys.puts);
+        assert.calledWith(sys.puts, "RED: \nWarning: No files in path lib/*.js");
+      },
+      
+      "should print explanation about ** bug": function () {
         this.scanner.findAllFiles(['lib/**/*.js']);
         assert.called(sys.puts);
-        assert.calledWith(sys.puts, "RED: Warning: No files in path lib/**/*.js");
+        assert.calledWith(sys.puts, "There's a problem with ** on some systems.\nTry using multiple paths with single stars instead.");
       }
     }
     
