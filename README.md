@@ -21,6 +21,15 @@ And for ease of use:
     
 or someplace on your path.
 
+Growl
+-----
+If you want autolint to notify you when new lint errors are introduced
+through Growl, you can get that here:
+
+    http://growl.info/
+    
+Make sure you also install the `growlnotify` in the `Extras`-folder.
+
 Basic usage
 -----------
 Start with: autolint [path to js-files]
@@ -41,7 +50,7 @@ Example:
         "lib/**/*.js",
         "test/**/*.js"
       ],
-      "options": {
+      "linterOptions": {
         "node": true
       }
     }
@@ -51,3 +60,19 @@ When you specify `paths` in the config-file, you can start linting with:
     autolint
     
 which is rather nice.
+
+Excluding files
+---------------
+You can also tell autolint to skip linting some files, like so:
+
+    {
+      "excludes": [
+        "jquery",
+        "underscore",
+        "sinon",
+        "raphael"
+      ]
+    }
+
+Any files (or paths) containing those words will not be linted, or counted towards your error total.
+

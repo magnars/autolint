@@ -71,12 +71,12 @@ buster.testCase("loadConfiguration", {
       });
     },
     
-    "should not overwrite all options": function () {
-      defaultConfiguration.options = {bitwise: "test"};
-      fs.readFile.yields(null, '{"options":{"node":true}}');
+    "should not overwrite all linter options": function () {
+      defaultConfiguration.linterOptions = {bitwise: "test"};
+      fs.readFile.yields(null, '{"linterOptions":{"node":true}}');
       loadConfiguration([]).then(function (config) {
-        assert.isTrue(config.options.node, 'config.options.node');
-        assert.equals(config.options.bitwise, "test");
+        assert.isTrue(config.linterOptions.node, 'config.linterOptions.node');
+        assert.equals(config.linterOptions.bitwise, "test");
       });
     },
     

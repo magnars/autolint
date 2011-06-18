@@ -3,7 +3,7 @@
     "test/*.js",
     "lib/*.js"
   ],
-  "options": {
+  "linterOptions": {
     "node": true
   }
 }

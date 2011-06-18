@@ -5,6 +5,8 @@ var buster = require('buster');
 var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var glob = require('glob');
+var sys = require('sys');
+var ansi = require('ansi');
 
 var lintScanner = require('lint-scanner');
 
@@ -45,7 +47,21 @@ buster.testCase("lintScanner", {
       this.scanner.findAllFiles(['lib/*.js', 'test/*.js']).then(function (files) {
         assert.equals(files, ['file1.js', 'file2.js', 'file3.js']);
       });
+    },
+    
+    "with unknown path": {
+      setUp: function () {
+        this.stub(sys, 'puts');
+        glob.glob.yields({});
+      },
+      
+      "should print warning": function () {
+        this.scanner.findAllFiles(['lib/**/*.js']);
+        assert.called(sys.puts);
+        assert.calledWith(sys.puts, "RED: Warning: No files in path lib/**/*.js");
+      }
     }
+    
   },
   
   "filterExcludedFiles": {
@@ -148,3 +164,8 @@ buster.testCase("lintScanner", {
     }
   }
 });
+
+ansi.RED = function (string) {
+  return "RED: " + string;
+};
+

@@ -28,7 +28,7 @@ buster.testCase("growlReporter", {
     this.repository.emit('errorsIntroduced');
     assert.called(this.reporter.handleErrorsIntroduced);
   },
-  
+
   "should growl about introduced errors": function () {
     this.reporter.handleErrorsIntroduced({name: 'file.js'}, [{}]);
     
