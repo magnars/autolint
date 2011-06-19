@@ -25,6 +25,12 @@ buster.testCase("jslint-linter", {
     assert.isFunction(linter.checkFile);
   },
   
+  "test should complain about missing options": function () {
+    assert.exception(function () {
+      linter.create();
+    });
+  },
+  
   "should read file": function () {
     this.linter.checkFile('file.js');
     assert.calledOnce(fs.readFile);
