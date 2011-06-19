@@ -64,7 +64,8 @@ buster.testCase("lintScanner", {
       "should print explanation about ** bug": function () {
         this.scanner.findAllFiles(['lib/**/*.js']);
         assert.called(sys.puts);
-        assert.calledWith(sys.puts, "There's a problem with ** on some systems.\nTry using multiple paths with single stars instead.");
+        assert.calledWith(sys.puts, "There's a problem with ** on some systems.\n" + 
+                                    "Try using multiple paths with single stars instead.");
       }
     }
     
