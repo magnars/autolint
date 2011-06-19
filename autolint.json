@@ -4,6 +4,10 @@
     "lib/*.js"
   ],
   "linterOptions": {
-    "node": true
+    "node": true,
+    "indent": 2,
+    "onevar": false,
+    "nomen": false,
+    "maxlen": 120
   }
 }
