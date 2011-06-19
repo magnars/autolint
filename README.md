@@ -21,15 +21,6 @@ And for ease of use:
     
 or someplace on your path.
 
-Growl
------
-If you want autolint to notify you when new lint errors are introduced
-through Growl, you can get that here:
-
-    http://growl.info/
-    
-Make sure you also install the `growlnotify` in the `Extras`-folder.
-
 Basic usage
 -----------
 Start with: autolint [path to js-files]
@@ -75,6 +66,13 @@ You can also tell autolint to skip linting some files, like so:
     }
 
 Any files (or paths) containing those words will not be linted, or counted towards your error total.
+
+Growl
+-----
+If you want autolint to notify you when new lint errors are introduced,
+you can [get Growl here](http://growl.info/).
+    
+Make sure you also install the `growlnotify` in the `Extras`-folder.
 
 Using JSHint
 ------------

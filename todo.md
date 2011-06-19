@@ -1,8 +1,10 @@
 Todo
 ----
-* licenses
-
 * being blamed for introducing an error, AND praised for fixing it,
   when changing around whitespace (changes lines)
 
 * replace sys.puts(ansi.RED) with dedicated object for printing
+
+* licenses
+
+* package with npm
