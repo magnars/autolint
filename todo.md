@@ -1,9 +1,5 @@
 Todo
 ----
-* clean-reporter should report next file to clean up
-
-* support for jshint
-
 * licenses
 
 * being blamed for introducing an error, AND praised for fixing it,

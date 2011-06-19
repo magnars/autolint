@@ -6,7 +6,7 @@ Installation
 ------------
 Right now, installation is rather clunky.
 
-Start by installing node.js (`brew install node`), then:
+Start by installing [node.js](http://nodejs.org/), then:
 
     git clone https://github.com/magnars/autolint.git
     cd autolint/
@@ -76,3 +76,11 @@ You can also tell autolint to skip linting some files, like so:
 
 Any files (or paths) containing those words will not be linted, or counted towards your error total.
 
+Using JSHint
+------------
+If JSLint is hurting your feelings, you can easily switch to
+[JSHint](http://jshint.com) by adding this to your configuration:
+
+    {
+      "linter": "jshint"
+    }
