@@ -1,10 +1,17 @@
 Todo
 ----
+* $ needs to be escaped in growl messages
+
 * being blamed for introducing an error, AND praised for fixing it,
   when changing around whitespace (changes lines)
+
+* keep getting "nice cleanup!" in a file with too many errors
 
 * replace sys.puts(ansi.RED) with dedicated object for printing
 
 * licenses
 
 * package with npm
+
+* switching git branches can be spammy, any way around that?
+
