@@ -19,18 +19,23 @@ And for ease of use:
 
     ln -s [full path to autolint/bin/autolint] ~/bin/autolint
     
-or someplace on your path.
+or someplace else on your path.
 
 Basic usage
 -----------
-Start with: autolint [path to js-files]
+Scan all `.js`-files in this directory and sub-directories with:
+
+    autolint
+
+You can also specify paths:
 
     autolint src/*.js test/*.js
 
 
 Configuration
 -------------
-Look at the default configuration `lib/default-configuration.js`
+Look at the default configuration
+[lib/default-configuration.js](lib/default-configuration.js)
 then override specific items in a file `autolint.json` at your root
 with valid JSON.
 
@@ -82,3 +87,14 @@ If JSLint is hurting your feelings, you can easily switch to
     {
       "linter": "jshint"
     }
+
+Contribute
+----------
+If you want to help out with features or bug fixes, that's awesome.
+Check out `todo.md` for inspiration.
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Don't forget tests. This is important so I don't break it in a
+  future version unintentionally.
+* Commit and send me a merge request.
