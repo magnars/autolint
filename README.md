@@ -91,7 +91,7 @@ If JSLint is hurting your feelings, you can easily switch to
 Contribute
 ----------
 If you want to help out with features or bug fixes, that's awesome.
-Check out `todo.md` for inspiration.
+Check out [`todo.md`](blob/master/todo.md) for inspiration.
 
 * Fork the project.
 * Make your feature addition or bug fix.
