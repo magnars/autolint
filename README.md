@@ -35,7 +35,7 @@ You can also specify paths:
 Configuration
 -------------
 Look at the default configuration
-[`lib/default-configuration.js`](autolint/blob/master/lib/default-configuration.js)
+[`lib/default-configuration.js`](blob/master/lib/default-configuration.js)
 then override specific items in a file `autolint.json` at your root
 with valid JSON.
 
