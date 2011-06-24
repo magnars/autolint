@@ -67,5 +67,11 @@ buster.testCase("growlReporter", {
       reason: 'Bah, humbug!'
     }]}, [{}]);
     assert.calledWith(growl.notify, 'Next error at line 19 char 0:\nBah, humbug!');
+  },
+  
+  "should escape $": function () {
+    this.reporter.handleErrorsFixed({name: 'file$.js', errors: []}, [{}]);
+    assert.calledWith(growl.notify, 'file\\$.js is clean.');
   }
+  
 });

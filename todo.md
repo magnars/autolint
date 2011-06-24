@@ -1,7 +1,5 @@
 Todo
 ====
-* `$` needs to be escaped in growl messages
-
 * being blamed for introducing an error, AND praised for fixing it,
   when changing around whitespace (changes lines)
 
