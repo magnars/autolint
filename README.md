@@ -31,6 +31,9 @@ You can also specify paths:
 
     autolint src/*.js test/*.js
 
+Once running, you can see all errors in all files by pressing ctrl-c in
+the terminal window. To see errors in a single file, update its mtime by
+saving or touching it.
 
 Configuration
 -------------
