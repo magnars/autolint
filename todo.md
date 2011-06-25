@@ -7,8 +7,6 @@ Todo
 
 * files with more than 50 errors are reported as having 52 errors.
 
-* replace `sys.puts(ansi.RED)` with dedicated object for printing
-
 * licenses
 
 * package with npm

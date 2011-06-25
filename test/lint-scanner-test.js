@@ -5,8 +5,7 @@ var buster = require('buster');
 var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var glob = require('glob');
-var sys = require('sys');
-var ansi = require('ansi');
+var print = require('print');
 
 var lintScanner = require('lint-scanner');
 
@@ -51,21 +50,23 @@ buster.testCase("lintScanner", {
     
     "with unknown path": {
       setUp: function () {
-        this.stub(sys, 'puts');
+        this.stub(print, 'red');
+        this.stub(print, 'black');
         glob.glob.yields({});
       },
       
       "should print warning": function () {
         this.scanner.findAllFiles(['lib/*.js']);
-        assert.called(sys.puts);
-        assert.calledWith(sys.puts, "RED: \nWarning: No files in path lib/*.js");
+        assert.called(print.red);
+        assert.calledWith(print.red, "\nWarning: No files in path lib/*.js");
       },
       
       "should print explanation about ** bug": function () {
         this.scanner.findAllFiles(['lib/**/*.js']);
-        assert.called(sys.puts);
-        assert.calledWith(sys.puts, "There's a problem with ** on some systems.\n" + 
-                                    "Try using multiple paths with single stars instead.");
+        assert.called(print.black);
+        assert.calledWith(print.black,
+          "  There's a problem with ** on some systems.", 
+          "  Try using multiple paths with single stars instead.");
       }
     }
     
@@ -171,8 +172,3 @@ buster.testCase("lintScanner", {
     }
   }
 });
-
-ansi.RED = function (string) {
-  return "RED: " + string;
-};
-

@@ -4,15 +4,15 @@
 var buster = require('buster');
 var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
-var sys = require('sys');
-var ansi = require('ansi');
+var print = require('print');
 var checkedFile = require('checked-file');
 
 var cleanReporter = require('clean-reporter');
 
 buster.testCase("cleanReporter", {
   setUp: function () {
-    this.stub(sys, 'puts');
+    this.stub(print, 'black');
+    this.stub(print, 'green');
     this.repository = new EventEmitter();
     this.repository.getDirtyFiles = this.stub().returns([]);
     this.reporter = cleanReporter.create(this.repository);
@@ -34,8 +34,8 @@ buster.testCase("cleanReporter", {
     
     "should congratulate": function () {
       this.repository.emit('errorsFixed', this.file, [{}]);
-      assert.called(sys.puts);
-      assert.calledWith(sys.puts, 'GREEN: \nExcellent! file1.js (and everything else) is clean.');
+      assert.called(print.green);
+      assert.calledWith(print.green, '', 'Excellent! file1.js (and everything else) is clean.');
     },
     
     "should list other files with errors": function () {
@@ -46,9 +46,10 @@ buster.testCase("cleanReporter", {
         checkedFile.create('file4.js', [{}, {}, {}])
       ]);
       this.repository.emit('errorsFixed', this.file, [{}]);
-      assert.called(sys.puts);
-      assert.calledWith(sys.puts, 'GREEN: \nNice! file1.js is clean. Want to clean more?');
-      assert.calledWith(sys.puts, '  file2.js (1 error)\n  file3.js (2 errors)');
+      assert.called(print.green);
+      assert.called(print.black);
+      assert.calledWith(print.green, '', 'Nice! file1.js is clean. Want to clean more?');
+      assert.calledWith(print.black, ['  file2.js (1 error)', '  file3.js (2 errors)']);
     }
   },
   
@@ -56,10 +57,6 @@ buster.testCase("cleanReporter", {
     var file = checkedFile.create('file1.js', [{}]);
     this.reporter.listen();
     this.repository.emit('errorsFixed', file, [{}]);
-    assert.notCalled(sys.puts);
+    assert.notCalled(print.green);
   }
 });
-
-ansi.GREEN = function (string) {
-  return "GREEN: " + string;
-};
