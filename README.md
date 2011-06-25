@@ -38,7 +38,7 @@ saving or touching it.
 Configuration
 -------------
 Look at the default configuration
-[`lib/default-configuration.js`](blob/master/lib/default-configuration.js)
+[`lib/default-configuration.js`](autolint/blob/master/lib/default-configuration.js)
 then override specific items in a file `autolint.json` at your root
 with valid JSON.
 
@@ -94,7 +94,7 @@ If JSLint is hurting your feelings, you can easily switch to
 Contribute
 ----------
 If you want to help out with features or bug fixes, that's awesome.
-Check out [`todo.md`](blob/master/todo.md) for inspiration.
+Check out [`todo.md`](autolint/blob/master/todo.md) for inspiration.
 
 * Fork the project.
 * Make your feature addition or bug fix.
