@@ -39,8 +39,9 @@ Configuration
 -------------
 Look at the default configuration
 [`lib/default-configuration.js`](autolint/blob/master/lib/default-configuration.js)
-then override specific items in a file `autolint.json` at your root
-with valid JSON.
+then override specific items in a file `autolint.json` with valid JSON. `autolint`
+looks for this file in the current directory, so I usually place it at the root of
+the project.
 
 Example:
 
@@ -78,7 +79,7 @@ Any files (or paths) containing those words will not be linted, or counted towar
 Growl
 -----
 If you want autolint to notify you when new lint errors are introduced,
-you can [get Growl here](http://growl.info/).
+you can [download Growl here](http://growl.info/).
     
 Make sure you also install the `growlnotify` in the `Extras`-folder.
 
