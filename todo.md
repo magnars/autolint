@@ -11,5 +11,7 @@ Todo
 
 * package with npm
 
+* support for global config in ~
+
 * switching git branches can be spammy, any way around that?
 
