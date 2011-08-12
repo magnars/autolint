@@ -6,14 +6,15 @@ Installation
 ------------
 Right now, installation is rather clunky.
 
-Start by installing [node.js](http://nodejs.org/), then:
+Start by installing [node.js](http://nodejs.org/) and [npm](http://npmjs.org/), then:
 
     git clone https://github.com/magnars/autolint.git
     cd autolint/
     chmod a+x bin/autolint
+    npm install buster -g
+    npm link buster
     git submodule init && git submodule update
-    cd node_modules/buster && git submodule init && git submodule update
-    cd ../glob/ && make
+    cd node_modules/glob/ && make
     
 And for ease of use:
 
