@@ -4,23 +4,9 @@ Autolint watches your files for jslint-errors.
 
 Installation
 ------------
-Right now, installation is rather clunky.
+Make sure you've got [node.js](http://nodejs.org/) and [npm](http://npmjs.org/), then:
 
-Start by installing [node.js](http://nodejs.org/) and [npm](http://npmjs.org/), then:
-
-    git clone https://github.com/magnars/autolint.git
-    cd autolint/
-    chmod a+x bin/autolint
-    npm install buster -g
-    npm link buster
-    git submodule init && git submodule update
-    cd node_modules/glob/ && make
-    
-And for ease of use:
-
-    ln -s [full path to autolint/bin/autolint] ~/bin/autolint
-    
-or someplace else on your path.
+    npm install autolint -g
 
 Basic usage
 -----------
@@ -103,3 +89,31 @@ Check out [`todo.md`](autolint/blob/master/todo.md) for inspiration.
 * Don't forget tests. This is important so I don't break it in a
   future version unintentionally.
 * Commit and send me a merge request.
+
+Setting up development environment
+----------------------------------
+Check out the source code from your fork:
+
+    git clone <url to your fork>
+
+Fetch the dependencies with npm:
+
+    npm install
+    
+Run the tests to make sure everything works:
+
+    ./run_tests
+    
+Install [watchr](https://github.com/mynyml/watchr) to run the tests automatically:
+
+    gem install watchr
+    
+Then start the autotest with:
+
+    watchr autotest.watchr
+    
+Also make sure you follow the linting rules with:
+
+    autolint
+    
+of course. ^^
