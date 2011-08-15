@@ -15,6 +15,20 @@
   "engines": {
     "node": "~v0.4.6"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "jslint-core": "*",
+    "glob": "*",
+    "growl": "*",
+    "underscore": "*",
+    "buster-promise": "*"
+  },
+  "devDependencies": {
+    "buster": "*"
+  },
+  "keywords": [
+    "JavaScript", 
+    "lint",
+    "jslint",
+    "jshint"
+  ]
 }

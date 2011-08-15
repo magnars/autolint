@@ -9,5 +9,8 @@
     "onevar": false,
     "nomen": false,
     "maxlen": 120
-  }
+  },
+  "excludes": [
+    "ansi.js"
+  ]
 }

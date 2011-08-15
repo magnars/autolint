@@ -4,7 +4,7 @@
 var buster = require('buster');
 var assert = buster.assert;
 var fs = require('fs');
-var jslint = require('jslint');
+var jslint = require('jslint-core');
 
 var linter = require('jslint-linter');
 
@@ -12,7 +12,7 @@ buster.testCase("jslint-linter", {
   setUp: function () {
     this.stub(fs, 'readFile');
     fs.readFile.yields(null, 'file contents');
-    this.stub(jslint, 'check').returns(true);
+    this.stub(jslint, 'JSLINT').returns(true);
     this.callback = this.stub();
     this.linter = linter.create({});
   },
@@ -41,8 +41,8 @@ buster.testCase("jslint-linter", {
     var options = {};
     this.linter = linter.create(options);
     this.linter.checkFile('file.js');
-    assert.calledOnce(jslint.check);
-    assert.calledWith(jslint.check, 'file contents', options);
+    assert.calledOnce(jslint.JSLINT);
+    assert.calledWith(jslint.JSLINT, 'file contents', options);
   },
   
   "should return promise": function () {
@@ -51,8 +51,8 @@ buster.testCase("jslint-linter", {
   
   "if check fails": {
     setUp: function () {
-      jslint.check.returns(false);
-      jslint.check.errors = [{}];
+      jslint.JSLINT.returns(false);
+      jslint.JSLINT.errors = [{}];
     },
     
     "should emit fileChecked event": function () {
@@ -86,7 +86,7 @@ buster.testCase("jslint-linter", {
   
   "if check succeeds": {
     setUp: function () {
-      jslint.check.returns(true);
+      jslint.JSLINT.returns(true);
     },
     
     "should emit fileChecked event": function () {
