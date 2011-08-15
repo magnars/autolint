@@ -4,7 +4,7 @@
 var buster = require('buster');
 var assert = buster.assert;
 var fs = require('fs');
-var jslint = require('jslint-core');
+var jslint = require('jslint');
 
 var linter = require('jslint-linter');
 

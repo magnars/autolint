@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 require.paths.push(__dirname + '/../lib');
+require.paths.push(__dirname + '/../vendor');
 
 var loadConfiguration = require('load-configuration');
 var startAutolint = require('start-autolint');

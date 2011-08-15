@@ -19,7 +19,6 @@
     "autolint": "./bin/autolint"
   },
   "dependencies": {
-    "jslint-core": "*",
     "glob": "*",
     "growl": "*",
     "underscore": "*",
