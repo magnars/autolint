@@ -15,6 +15,9 @@
   "engines": {
     "node": "~v0.4.6"
   },
+  "bin": {
+    "autolint": "./bin/autolint"
+  },
   "dependencies": {
     "jslint-core": "*",
     "glob": "*",
