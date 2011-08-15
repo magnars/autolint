@@ -33,5 +33,5 @@ JSLint, located at vendor/jslint.js, is copyright Douglas Crockford.
 JSLint is provided under a customized MIT license, which is
 included in the header of vendor/jslint.js.
 
-JSHint is provided under the same license as JSHint, which is
+JSHint is provided under the same license as JSLint, which is
 included in the header of vendor/jshint.js.
