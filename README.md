@@ -101,7 +101,7 @@ Fetch the dependencies with npm:
 
     npm install
 
-Install buster if you haven't already:
+Install [buster.js](http://busterjs.org) if you haven't already:
 
     npm install buster -g
     
