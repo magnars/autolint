@@ -7,7 +7,7 @@ end
 
 def run_all_tests
   system('clear')
-  result = run "./run_tests"
+  result = run "buster test"
   puts result
 end
 

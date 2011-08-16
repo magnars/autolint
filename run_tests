@@ -1,8 +1,0 @@
-#!/usr/bin/env node
-
-var buster = require("buster");
-var glob = require("glob");
-
-glob.glob("test/**/*-test.js", function (err, files) {
-    files.forEach(function (f) { require("./" + f); });
-});

@@ -95,14 +95,23 @@ Setting up development environment
 Check out the source code from your fork:
 
     git clone <url to your fork>
+    cd autolint
 
 Fetch the dependencies with npm:
 
     npm install
+
+Install buster if you haven't already:
+
+    npm install buster -g
     
+Then link buster in:
+
+    npm link buster
+
 Run the tests to make sure everything works:
 
-    ./run_tests
+    buster test
     
 Install [watchr](https://github.com/mynyml/watchr) to run the tests automatically:
 
