@@ -1,6 +1,3 @@
-/*jslint indent: 2, onevar: false */
-/*global require */
-
 var buster = require('buster');
 var assert = buster.assert;
 
