@@ -119,3 +119,7 @@ Also make sure you follow the linting rules with:
     autolint
     
 of course. ^^
+
+License
+-------
+See LICENSE file.

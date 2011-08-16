@@ -1,6 +1,6 @@
 {
   "name": "autolint",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./bin/autolint",
   "description": "Autolint watches your files for jslint-errors.",
   "author": "Magnar Sveen <magnars@gmail.com>",
@@ -32,5 +32,11 @@
     "lint",
     "jslint",
     "jshint"
+  ],
+  "licenses": [
+    {
+      "type": "Modified MIT / BSD",
+      "url": "https://github.com/magnars/autolint/blob/master/LICENSE"
+    }
   ]
 }

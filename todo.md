@@ -7,11 +7,5 @@ Todo
 
 * files with more than 50 errors are reported as having 52 errors.
 
-* licenses
-
-* package with npm
-
-* support for global config in ~
-
 * switching git branches can be spammy, any way around that?
 
