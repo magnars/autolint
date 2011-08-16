@@ -1,7 +1,7 @@
 var buster = require('buster');
 var assert = buster.assert;
 
-var file = require('checked-file');
+var file = require('../lib/checked-file');
 
 buster.testCase("checkedFile", {
   "should be an object": function () {

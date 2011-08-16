@@ -2,7 +2,7 @@ var buster = require("buster");
 var assert = buster.assert;
 var fs = require('fs');
 
-var fileWatcher = require('file-watcher');
+var fileWatcher = require('../lib/file-watcher');
 
 buster.testCase("fileWatcher", {
   setUp: function () {

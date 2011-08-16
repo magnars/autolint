@@ -2,9 +2,9 @@ var buster = require('buster');
 var assert = buster.assert;
 var fs = require('fs');
 var path = require('path');
-var defaultConfiguration = require('default-configuration');
+var defaultConfiguration = require('../lib/default-configuration');
 
-var loadConfiguration = require('load-configuration');
+var loadConfiguration = require('../lib/load-configuration');
 
 buster.testCase("loadConfiguration", {
   setUp: function () {

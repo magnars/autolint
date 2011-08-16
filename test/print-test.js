@@ -1,9 +1,9 @@
 var buster = require('buster');
 var assert = buster.assert;
 var sys = require('sys');
-var ansi = require('ansi');
+var ansi = require('../lib/ansi');
 
-var print = require('print');
+var print = require('../lib/print');
 
 buster.testCase("print", {
   setUp: function () {

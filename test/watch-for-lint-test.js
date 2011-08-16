@@ -1,9 +1,9 @@
 var buster = require('buster');
 var assert = buster.assert;
-var fileWatcher = require('file-watcher');
 var EventEmitter = require('events').EventEmitter;
+var fileWatcher = require('../lib/file-watcher');
 
-var watchForLint = require('watch-for-lint');
+var watchForLint = require('../lib/watch-for-lint');
 
 buster.testCase("watchForLint", {
   setUp: function () {

@@ -1,7 +1,7 @@
 var buster = require('buster');
 var assert = buster.assert;
 
-var pluralize = require('pluralize');
+var pluralize = require('../lib/pluralize');
 
 buster.testCase("pluralize", {
   "should not pluralize one item": function () {

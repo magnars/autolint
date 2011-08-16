@@ -2,9 +2,9 @@ var buster = require('buster');
 var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var glob = require('glob');
-var checkedFile = require('checked-file');
+var checkedFile = require('../lib/checked-file');
 
-var repository = require('repository');
+var repository = require('../lib/repository');
 
 function file(name, errors) {
   return checkedFile.create(name, errors);

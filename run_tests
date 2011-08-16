@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-require.paths.push(__dirname + '/lib');
-require.paths.push(__dirname + '/vendor');
-
 var buster = require("buster");
 var glob = require("glob");
 

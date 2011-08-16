@@ -1,9 +1,9 @@
 var buster = require('buster');
 var assert = buster.assert;
 var fs = require('fs');
-var jslint = require('jslint');
+var jslint = require('../vendor/jslint');
 
-var linter = require('jslint-linter');
+var linter = require('../lib/jslint-linter');
 
 buster.testCase("jslint-linter", {
   setUp: function () {

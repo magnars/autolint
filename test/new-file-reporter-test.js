@@ -1,10 +1,10 @@
 var buster = require('buster');
 var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
-var checkedFile = require('checked-file');
-var print = require('print');
+var checkedFile = require('../lib/checked-file');
+var print = require('../lib/print');
 
-var newFileReporter = require('new-file-reporter');
+var newFileReporter = require('../lib/new-file-reporter');
 
 buster.testCase("newFileReporter", {
   setUp: function () {

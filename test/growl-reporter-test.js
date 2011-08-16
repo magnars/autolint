@@ -3,7 +3,7 @@ var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var growl = require('growl');
 
-var growlReporter = require('growl-reporter');
+var growlReporter = require('../lib/growl-reporter');
 
 buster.testCase("growlReporter", {
   setUp: function () {

@@ -2,9 +2,9 @@ var buster = require('buster');
 var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var glob = require('glob');
-var print = require('print');
+var print = require('../lib/print');
 
-var lintScanner = require('lint-scanner');
+var lintScanner = require('../lib/lint-scanner');
 
 buster.testCase("lintScanner", {
   setUp: function () {
