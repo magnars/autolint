@@ -111,7 +111,9 @@ Install [watchr](https://github.com/mynyml/watchr) to run the tests automaticall
 Then start the autotest with:
 
     watchr autotest.watchr
-    
+
+If watchr can't be interrupted with 2x ctrl-c, switch to ruby ~1.9
+
 Also make sure you follow the linting rules with:
 
     autolint
