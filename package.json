@@ -1,6 +1,6 @@
 {
   "name": "autolint",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "./bin/autolint",
   "description": "Autolint watches your files for jslint-errors.",
   "author": "Magnar Sveen <magnars@gmail.com>",
@@ -13,13 +13,13 @@
     "test": "./run_tests"
   },
   "engines": {
-    "node": "~0.4"
+    "node": "~0.6"
   },
   "bin": {
     "autolint": "./bin/autolint"
   },
   "dependencies": {
-    "glob": "~2.0",
+    "glob": "~2.1",
     "growl": "~1.1",
     "underscore": "~1.1",
     "buster-promise": "~0.3"

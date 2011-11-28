@@ -1,51 +1,51 @@
 var buster = require('buster');
 var assert = buster.assert;
-var sys = require('sys');
+var util = require('util');
 var ansi = require('../lib/ansi');
 
 var print = require('../lib/print');
 
 buster.testCase("print", {
   setUp: function () {
-    this.stub(sys, 'puts');
+    this.stub(util, 'puts');
   },
   
   "should be a object": function () {
     assert.isObject(print);
   },
   
-  "should print using sys.puts": function () {
+  "should print using util.puts": function () {
     print.black('hello');
-    assert.called(sys.puts);
-    assert.calledWith(sys.puts, 'hello');
+    assert.called(util.puts);
+    assert.calledWith(util.puts, 'hello');
   },
   
   "should print multiple lines": function () {
     print.black('hello', 'world');
-    assert.calledTwice(sys.puts);
-    assert.calledWith(sys.puts, 'hello');
-    assert.calledWith(sys.puts, 'world');
+    assert.calledTwice(util.puts);
+    assert.calledWith(util.puts, 'hello');
+    assert.calledWith(util.puts, 'world');
   },
   
   "should print array of lines": function () {
     print.black(["hey", "ho", "let's go"]);
-    assert.calledThrice(sys.puts);
-    assert.calledWith(sys.puts, "hey");
-    assert.calledWith(sys.puts, "ho");
-    assert.calledWith(sys.puts, "let's go");
+    assert.calledThrice(util.puts);
+    assert.calledWith(util.puts, "hey");
+    assert.calledWith(util.puts, "ho");
+    assert.calledWith(util.puts, "let's go");
   },
   
   "should print in red": function () {
     print.red('hello');
-    assert.called(sys.puts);
-    assert.calledWith(sys.puts, 'RED: hello');
+    assert.called(util.puts);
+    assert.calledWith(util.puts, 'RED: hello');
   },
   
   "should print in green": function () {
     print.green('hey', 'dude');
-    assert.calledTwice(sys.puts);
-    assert.calledWith(sys.puts, 'GREEN: hey');
-    assert.calledWith(sys.puts, 'GREEN: dude');
+    assert.calledTwice(util.puts);
+    assert.calledWith(util.puts, 'GREEN: hey');
+    assert.calledWith(util.puts, 'GREEN: dude');
   }
 });
 
