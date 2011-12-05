@@ -1,5 +1,6 @@
 var buster = require('buster');
 var assert = buster.assert;
+var refute = buster.refute;
 var EventEmitter = require('events').EventEmitter;
 var glob = require('glob');
 var print = require('../lib/print');
@@ -127,7 +128,7 @@ buster.testCase("lintScanner", {
       var callback = this.stub();
 
       this.scanner.checkFiles(['file.js']).then(callback);
-      assert.notCalled(callback);
+      refute.called(callback);
       this.promise.resolve();
       assert.called(callback);
     }

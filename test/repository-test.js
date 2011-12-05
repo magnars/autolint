@@ -1,5 +1,6 @@
 var buster = require('buster');
 var assert = buster.assert;
+var refute = buster.refute;
 var EventEmitter = require('events').EventEmitter;
 var glob = require('glob');
 var checkedFile = require('../lib/checked-file');
@@ -55,7 +56,7 @@ buster.testCase("repository", {
     
     "should not emit without errors": function () {
       this.linter.emit('fileChecked', file('file4.js', []));
-      assert.notCalled(this.callback);
+      refute.called(this.callback);
     }
   },
   
@@ -68,7 +69,7 @@ buster.testCase("repository", {
   
     "should not emit event for old files": function () {
       this.linter.emit('fileChecked', file('old-file.js', []));
-      assert.notCalled(this.callback);
+      refute.called(this.callback);
     },
   
     "should emit event for new files": function () {
@@ -105,7 +106,7 @@ buster.testCase("repository", {
     
     "should not emit event without new errors": function () {
       this.linter.emit('fileChecked', file('file.js', [this.oldError]));
-      assert.notCalled(this.callback);
+      refute.called(this.callback);
     },
     
     "should ignore null errors": function () {
@@ -118,7 +119,7 @@ buster.testCase("repository", {
       this.repo.files['file.js'] = file('file.js', [this.oldError, null]);
       var f = file('file.js', [Object.create(this.oldError), this.newError]);
       this.linter.emit('fileChecked', f);
-      assert.notCalled(this.callback);
+      refute.called(this.callback);
     }
   },
   
@@ -151,7 +152,7 @@ buster.testCase("repository", {
         Object.create(this.error1), 
         Object.create(this.error2)
       ]));
-      assert.notCalled(this.callback);
+      refute.called(this.callback);
     },
     
     "should emit also when we have an unknown number of errors": function () {
@@ -164,7 +165,7 @@ buster.testCase("repository", {
     "should not emit when we introduce an unknown number of errors": function () {
       var f = file('file.js', [Object.create(this.error2), null]);
       this.linter.emit('fileChecked', f);
-      assert.notCalled(this.callback);
+      refute.called(this.callback);
     }
   },
   
@@ -184,7 +185,7 @@ buster.testCase("repository", {
     
     "should not emit when numbers are the same": function () {
       this.linter.emit('fileChecked', file('file.js', [{}, {}]));
-      assert.notCalled(this.callback);
+      refute.called(this.callback);
     }
   }
 });

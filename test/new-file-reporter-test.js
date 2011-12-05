@@ -1,5 +1,6 @@
 var buster = require('buster');
 var assert = buster.assert;
+var refute = buster.refute;
 var EventEmitter = require('events').EventEmitter;
 var checkedFile = require('../lib/checked-file');
 var print = require('../lib/print');
@@ -28,8 +29,8 @@ buster.testCase("newFileReporter", {
   
   "should not print when found a clean file": function () {
     this.reporter.handleNewFile(checkedFile.create('file1.js', []));
-    assert.notCalled(print.red);
-    assert.notCalled(print.black);
+    refute.called(print.red);
+    refute.called(print.black);
   },
   
   "should print when found a clean file in verbose mode": function () {

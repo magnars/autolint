@@ -1,5 +1,6 @@
 var buster = require('buster');
 var assert = buster.assert;
+var refute = buster.refute;
 
 var file = require('../lib/checked-file');
 
@@ -38,12 +39,12 @@ buster.testCase("checkedFile", {
   "too many errors": {
     "should look for trailing null": function () {
       var f = file.create('', [{}, {}, null]);
-      assert.isTrue(f.tooManyErrors(), 'too many errors');
+      assert(f.tooManyErrors());
     },
 
     "should be false without trailing null": function () {
       var f = file.create('', [{}, {}]);
-      assert.isFalse(f.tooManyErrors(), 'too many errors');
+      refute(f.tooManyErrors());
     }
   },
   

@@ -1,39 +1,42 @@
 {
-  "name": "autolint",
-  "version": "0.1.4",
-  "main": "./bin/autolint",
-  "description": "Autolint watches your files for jslint-errors.",
-  "author": "Magnar Sveen <magnars@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/magnars/autolint.git"
-  },
-  "homepage": "https://github.com/magnars/autolint",
-  "scripts": {
-    "test": "./run_tests"
-  },
-  "engines": {
-    "node": "~0.6"
-  },
-  "bin": {
-    "autolint": "./bin/autolint"
-  },
-  "dependencies": {
-    "glob": "~2.1",
-    "growl": "~1.1",
-    "underscore": "~1.1",
-    "buster-promise": "~0.3"
-  },
-  "keywords": [
-    "JavaScript",
-    "lint",
-    "jslint",
-    "jshint"
-  ],
-  "licenses": [
-    {
-      "type": "Modified MIT / BSD",
-      "url": "https://github.com/magnars/autolint/blob/master/LICENSE"
-    }
-  ]
+    "name": "autolint",
+    "version": "0.1.5",
+    "main": "./bin/autolint",
+    "description": "Autolint watches your files for jslint-errors.",
+    "author": "Magnar Sveen <magnars@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/magnars/autolint.git"
+    },
+    "homepage": "https://github.com/magnars/autolint",
+    "scripts": {
+        "test": "./run_tests"
+    },
+    "engines": {
+        "node": "~0.6"
+    },
+    "bin": {
+        "autolint": "./bin/autolint"
+    },
+    "dependencies": {
+        "glob": "~2.1",
+        "growl": "~1.1",
+        "underscore": "~1.1",
+        "buster-promise": "~0.3"
+    },
+    "devDependencies": {
+        "buster": "~0.3"
+    },
+    "keywords": [
+        "JavaScript",
+        "lint",
+        "jslint",
+        "jshint"
+    ],
+    "licenses": [
+        {
+            "type": "Modified MIT / BSD",
+            "url": "https://github.com/magnars/autolint/blob/master/LICENSE"
+        }
+    ]
 }

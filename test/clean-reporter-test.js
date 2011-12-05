@@ -1,5 +1,6 @@
 var buster = require('buster');
 var assert = buster.assert;
+var refute = buster.refute;
 var EventEmitter = require('events').EventEmitter;
 var print = require('../lib/print');
 var checkedFile = require('../lib/checked-file');
@@ -54,6 +55,6 @@ buster.testCase("cleanReporter", {
     var file = checkedFile.create('file1.js', [{}]);
     this.reporter.listen();
     this.repository.emit('errorsFixed', file, [{}]);
-    assert.notCalled(print.green);
+    refute.called(print.green);
   }
 });
