@@ -1,5 +1,4 @@
 var buster = require('buster');
-var assert = buster.assert;
 var EventEmitter = require('events').EventEmitter;
 var print = require('../lib/print');
 var checkedFile = require('../lib/checked-file');
@@ -14,18 +13,18 @@ buster.testCase("lintReporter", {
     this.stub(print, 'red');
     this.stub(print, 'black');
   },
-  
+
   "should be an object": function () {
     assert.isObject(lintReporter);
   },
-  
+
   "should print filename with number of errors": function () {
     var file = checkedFile.create('file1.js', [{}, {}]);
     this.repository.emit('dirty', file);
     assert.called(print.red);
     assert.calledWith(print.red, '', 'Lint in file1.js, 2 errors:');
   },
-  
+
   "should print error": function () {
     var file = checkedFile.create('file1.js', [{
       line: 17,
@@ -35,5 +34,5 @@ buster.testCase("lintReporter", {
     this.repository.emit('dirty', file);
     assert.calledWith(print.black, '  line 17 char 9: Bazinga!');
   }
-  
+
 });

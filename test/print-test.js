@@ -1,5 +1,4 @@
 var buster = require('buster');
-var assert = buster.assert;
 var util = require('util');
 var ansi = require('../lib/ansi');
 
@@ -9,24 +8,24 @@ buster.testCase("print", {
   setUp: function () {
     this.stub(util, 'puts');
   },
-  
+
   "should be a object": function () {
     assert.isObject(print);
   },
-  
+
   "should print using util.puts": function () {
     print.black('hello');
     assert.called(util.puts);
     assert.calledWith(util.puts, 'hello');
   },
-  
+
   "should print multiple lines": function () {
     print.black('hello', 'world');
     assert.calledTwice(util.puts);
     assert.calledWith(util.puts, 'hello');
     assert.calledWith(util.puts, 'world');
   },
-  
+
   "should print array of lines": function () {
     print.black(["hey", "ho", "let's go"]);
     assert.calledThrice(util.puts);
@@ -34,13 +33,13 @@ buster.testCase("print", {
     assert.calledWith(util.puts, "ho");
     assert.calledWith(util.puts, "let's go");
   },
-  
+
   "should print in red": function () {
     print.red('hello');
     assert.called(util.puts);
     assert.calledWith(util.puts, 'RED: hello');
   },
-  
+
   "should print in green": function () {
     print.green('hey', 'dude');
     assert.calledTwice(util.puts);

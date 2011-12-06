@@ -1,6 +1,4 @@
 var buster = require('buster');
-var assert = buster.assert;
-var refute = buster.refute;
 var fs = require('fs');
 var path = require('path');
 var defaultConfiguration = require('../lib/default-configuration');

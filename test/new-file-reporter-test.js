@@ -1,6 +1,3 @@
-var buster = require('buster');
-var assert = buster.assert;
-var refute = buster.refute;
 var EventEmitter = require('events').EventEmitter;
 var checkedFile = require('../lib/checked-file');
 var print = require('../lib/print');
