@@ -1,6 +1,5 @@
 var buster = require('buster');
 var EventEmitter = require('events').EventEmitter;
-var glob = require('glob');
 var checkedFile = require('../lib/checked-file');
 
 var repository = require('../lib/repository');

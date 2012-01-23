@@ -19,7 +19,7 @@
         "autolint": "./bin/autolint"
     },
     "dependencies": {
-        "glob": "~2.1",
+        "glob": "~3.0",
         "growl": "~1.1",
         "underscore": "~1.1",
         "buster-promise": "~0.3"

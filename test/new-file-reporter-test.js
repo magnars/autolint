@@ -1,3 +1,4 @@
+var buster = require('buster');
 var EventEmitter = require('events').EventEmitter;
 var checkedFile = require('../lib/checked-file');
 var print = require('../lib/print');

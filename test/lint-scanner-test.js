@@ -1,14 +1,14 @@
 var buster = require('buster');
 var EventEmitter = require('events').EventEmitter;
-var glob = require('glob');
 var print = require('../lib/print');
 
 var lintScanner = require('../lib/lint-scanner');
 
 buster.testCase("lintScanner", {
   setUp: function () {
+    this.glob = this.stub();
     this.linter = new EventEmitter();
-    this.scanner = lintScanner.create(this.linter);
+    this.scanner = lintScanner.create(this.linter, this.glob);
   },
 
   "should be an object": function () {
@@ -26,19 +26,15 @@ buster.testCase("lintScanner", {
   },
 
   "findAllFiles": {
-    setUp: function () {
-      this.stub(glob, 'glob');
-    },
-
     "should use glob to find files": function () {
       this.scanner.findAllFiles(['*.js']);
-      assert.calledOnce(glob.glob);
-      assert.calledWith(glob.glob, '*.js');
+      assert.calledOnce(this.glob);
+      assert.calledWith(this.glob, '*.js');
     },
 
     "should find all files": function () {
-      glob.glob.withArgs('lib/*.js').yields(null, ['file1.js']);
-      glob.glob.withArgs('test/*.js').yields(null, ['file2.js', 'file3.js']);
+      this.glob.withArgs('lib/*.js').yields(null, ['file1.js']);
+      this.glob.withArgs('test/*.js').yields(null, ['file2.js', 'file3.js']);
       this.scanner.findAllFiles(['lib/*.js', 'test/*.js']).then(function (files) {
         assert.equals(files, ['file1.js', 'file2.js', 'file3.js']);
       });
@@ -48,7 +44,7 @@ buster.testCase("lintScanner", {
       setUp: function () {
         this.stub(print, 'red');
         this.stub(print, 'black');
-        glob.glob.yields({});
+        this.glob.yields({});
       },
 
       "should print warning": function () {
@@ -100,7 +96,7 @@ buster.testCase("lintScanner", {
     },
 
     "should exclude files from configuration": function () {
-      var scanner = lintScanner.create(this.linter, [/jquery/]);
+      var scanner = lintScanner.create(this.linter, this.glob, [/jquery/]);
       var files = ['file.js', 'jquery.js', 'color.jquery.js'];
       assert.equals(scanner.filterExcludedFiles(files), ['file.js']);
     }
