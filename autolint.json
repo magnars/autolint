@@ -8,7 +8,11 @@
     "indent": 2,
     "onevar": false,
     "nomen": false,
-    "maxlen": 120
+    "maxlen": 120,
+    "predef": [
+      "assert",
+      "refute"
+    ]
   },
   "excludes": [
     "ansi.js"
