@@ -1,4 +1,4 @@
-{
+module.exports = {
   "paths": [
     "test/*.js",
     "lib/*.js"
@@ -17,4 +17,4 @@
   "excludes": [
     "ansi.js"
   ]
-}
+};
