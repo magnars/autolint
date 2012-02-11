@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
-var startAutolint = require('../lib/start-autolint');
+var lintOnce = process.argv[2] === "--once";
+var lint = lintOnce ? require('../lib/lint-once') : require('../lib/start-autolint');
+
 var configuration = require('../lib/configuration');
 var cliConfirm = require("../lib/cli-confirm");
 var util = require('util');
 
 if (configuration.exists()) {
-  startAutolint(configuration.load());
+  lint(configuration.load());
 } else {
   util.puts("No configuration file (autolint.js) found in this directory.");
   util.puts("Autolint can create a default config file for you.");
