@@ -1,12 +1,12 @@
 Todo
 ====
-* default config files for both jslint and jshint
-
 * rename to drylint
 
 * create plugin for js2-mode.el that sets global-externs
 
 * a website
+
+* use when.js instead of buster-promise
 
 * being blamed for introducing an error, AND praised for fixing it,
   when changing around whitespace (changes line numbers)
