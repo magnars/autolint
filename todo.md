@@ -1,7 +1,5 @@
 Todo
 ====
-* rename to drylint
-
 * create plugin for js2-mode.el that sets global-externs
 
 * a website

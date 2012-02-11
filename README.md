@@ -1,73 +1,94 @@
 Autolint
 ========
-Autolint watches your files for jslint-errors.
+
+Autolint watches your files for jslint-errors. DRY up your js-files, freeing
+them of all those linting config comments. Gather all your linting preferences
+in one place per project.
+
+Changes from 0.1.5 to 1.0.0
+---------------------------
+
+Autolint now uses [semantic versioning](http://semver.org).
+
+* The configuration file is no longer a `json`-file, but a proper node
+  module. Add `module.exports =` to the start of the file and rename to
+  `autolint.js` to upgrade.
+* Autolint no longer runs without a config file. Running it without one will
+  prompt you for a default config file to be created.
+* Passing `--once` to autolint makes it not-so-auto. Instead it is run once,
+  exiting with a `-1` error code if any lint is found. This makes it well
+  suited for pre-commit-hooks and the like.
+* Updated bundled versions of jslint and jshint - these have been significantly
+  changed since last, so your configuration file will certainly need an upgrade
+  too.
 
 Installation
 ------------
+
 Make sure you've got [node.js](http://nodejs.org/) and [npm](http://npmjs.org/), then:
 
     npm install autolint -g
 
 Basic usage
 -----------
-Scan all `.js`-files in this directory and sub-directories with:
+
+Create a default configuration file by running:
 
     autolint
 
-You can also specify paths:
+Tweak the config to your liking, then start linting with:
 
-    autolint src/*.js test/*.js
+    autolint
 
 Once running, you can see all errors in all files by pressing ctrl-c in
 the terminal window. To see errors in a single file, update its mtime by
 saving or touching it.
 
+You can also skip the watching-part, and just lint the entire project once:
+
+    autolint --once
+
 Configuration
 -------------
+
 Look at the default configuration
 [`lib/default-configuration.js`](autolint/blob/master/lib/default-configuration.js)
-then override specific items in a file `autolint.json` with valid JSON. `autolint`
-looks for this file in the current directory, so I usually place it at the root of
-the project.
+then override specific items in `autolint.js`. `autolint` always looks for this
+file in the current directory.
 
 Example:
 
-    {
-      "paths": [
+    module.exports = {
+      paths: [
         "lib/**/*.js",
         "test/**/*.js"
       ],
-      "linterOptions": {
-        "node": true
+      linterOptions: {
+        node: true
       }
-    }
-
-When you specify `paths` in the config-file, you can start linting with:
-
-    autolint
-    
-which is rather nice.
+    };
 
 Excluding files
 ---------------
 You can also tell autolint to skip linting some files, like so:
 
-    {
-      "excludes": [
+    module.exports = {
+      excludes: [
         "jquery",
         "underscore",
         "sinon",
         "raphael"
       ]
-    }
+    };
 
-Any files (or paths) containing those words will not be linted, or counted towards your error total.
+Any files (or paths) containing those words will not be linted, or counted
+towards your error total.
 
 Growl
 -----
 If you want autolint to notify you when new lint errors are introduced,
 you can [download Growl here](http://growl.info/).
-    
+
 Make sure you also install the `growlnotify` in the `Extras`-folder.
 
 Using JSHint
@@ -75,9 +96,9 @@ Using JSHint
 If JSLint is hurting your feelings, you can easily switch to
 [JSHint](http://jshint.com) by adding this to your configuration:
 
-    {
+    module.exports = {
       "linter": "jshint"
-    }
+    };
 
 Contribute
 ----------
@@ -104,7 +125,7 @@ Fetch the dependencies with npm:
 Install [buster.js](http://busterjs.org) if you haven't already:
 
     npm install buster -g
-    
+
 Then link buster in:
 
     npm link buster
@@ -112,11 +133,11 @@ Then link buster in:
 Run the tests to make sure everything works:
 
     buster test
-    
+
 Install [watchr](https://github.com/mynyml/watchr) to run the tests automatically:
 
     gem install watchr
-    
+
 Then start the autotest with:
 
     watchr autotest.watchr
@@ -126,7 +147,7 @@ If watchr can't be interrupted with 2x ctrl-c, switch to ruby ~1.9
 Also make sure you follow the linting rules with:
 
     autolint
-    
+
 of course. ^^
 
 License
