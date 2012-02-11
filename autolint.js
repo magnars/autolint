@@ -6,9 +6,10 @@ module.exports = {
   "linterOptions": {
     "node": true,
     "indent": 2,
-    "onevar": false,
-    "nomen": false,
     "maxlen": 120,
+    "vars": true,
+    "nomen": true,
+    "sloppy": true,
     "predef": [
       "assert",
       "refute"
