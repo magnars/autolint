@@ -2,16 +2,14 @@
 
 var startAutolint = require('../lib/start-autolint');
 var configuration = require('../lib/configuration');
-//var cliConfirm = require("../lib/cli-confirm");
+var cliConfirm = require("../lib/cli-confirm");
 var util = require('util');
 
 if (configuration.exists()) {
   startAutolint(configuration.load());
 } else {
-  util.puts("");
   util.puts("No configuration file (autolint.js) found in this directory.");
   util.puts("Autolint can create a default config file for you.");
-  util.puts("");
   cliConfirm("Create default autolint.js in current directory?", function () {
     configuration.createDefaultConfigFile();
     util.puts("");
