@@ -22,6 +22,10 @@ buster.testCase('Configuration', {
     assert.match(configuration.load(), { linter: "jslint" });
   },
 
+  "should use jslintOptions when linter is jslint": function () {
+    assert.match(configuration.load(), { linterOptions: { sloppy: true } });
+  },
+
   "should overwrite defaults from autolint.js": function () {
     assert.match(configuration.load(), { linterOptions: { indent: 2 } });
   },
