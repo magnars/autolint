@@ -40,7 +40,7 @@ buster.testCase('Configuration', {
     this.stub(fs, "createReadStream").returns(oldFile);
     this.stub(fs, "createWriteStream").returns(newFile);
     this.stub(util, "pump");
-    
+
     configuration.createDefaultConfigFile();
 
     assert.calledOnceWith(fs.createWriteStream, "./autolint.js");
