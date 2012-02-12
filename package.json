@@ -1,6 +1,6 @@
 {
     "name": "autolint",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "main": "./lib/autolint",
     "description": "Autolint watches your files for jslint-errors.",
     "author": "Magnar Sveen <magnars@gmail.com>",
