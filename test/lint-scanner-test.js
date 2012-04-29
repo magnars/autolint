@@ -1,4 +1,5 @@
 var buster = require('buster');
+var when = require("when");
 var EventEmitter = require('events').EventEmitter;
 var print = require('../lib/print');
 
@@ -104,7 +105,7 @@ buster.testCase("lintScanner", {
 
   "checkFiles": {
     setUp: function () {
-      this.promise = buster.promise.create();
+      this.promise = when.defer();
       this.linter.checkFile = this.stub().returns(this.promise);
     },
 
@@ -130,8 +131,8 @@ buster.testCase("lintScanner", {
 
   "scan": {
     setUp: function () {
-      this.findPromise = buster.promise.create();
-      this.checkPromise = buster.promise.create();
+      this.findPromise = when.defer();
+      this.checkPromise = when.defer();
       this.stub(this.scanner, 'findAllFiles').returns(this.findPromise);
       this.stub(this.scanner, 'checkFiles').returns(this.checkPromise);
     },
