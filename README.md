@@ -206,7 +206,7 @@ For jshint:
       }
     };
 
-The rules in autolint.js are project-wide, but yYou can still have file and function specific rules, like this:
+The rules in autolint.js are project-wide, but you can still have file and function specific rules, like this:
 
     /*jslint bitwise:true*/
 
