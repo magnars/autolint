@@ -202,7 +202,7 @@
 // For example:
 
 /*properties
-    'suppress',
+    'suppress', 'suppressed_messages',
     '\b', '\t', '\n', '\f', '\r', '!=', '!==', '"', '%', '\'', '(arguments)',
     '(begin)', '(breakage)', '(context)', '(error)', '(identifier)', '(line)',
     '(loopage)', '(name)', '(params)', '(scope)', '(token)', '(vars)',
@@ -1147,6 +1147,9 @@ var JSLINT = (function () {
     }
 
     function do_warn(message, offender, a, b, c, d) {
+        if (JSLINT.suppressed_messages[message] === true) {
+            return false;
+        }
         var character, line, warning;
         offender = offender || next_token;  // ~~
         line = offender.line || 0;
@@ -1189,7 +1192,9 @@ var JSLINT = (function () {
 
     function stop(message, offender, a, b, c, d) {
         var warning = do_warn(message, offender, a, b, c, d);
-        quit(bundle.stopping, warning.line, warning.character);
+        if (warning !== false) {
+            quit(bundle.stopping, warning.line, warning.character);
+        }
     }
 
     function stop_at(message, line, character, a, b, c, d) {
@@ -6461,6 +6466,8 @@ klass:              do {
     itself.jslint = itself;
 
     itself.edition = '2012-02-16';
+
+    itself.suppressed_messages = suppressed_messages;
 
     return itself;
 }());
