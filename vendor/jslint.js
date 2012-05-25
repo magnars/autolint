@@ -1137,7 +1137,7 @@ var JSLINT = (function () {
         };
     }
 
-    function warn(message, offender, a, b, c, d) {
+    function do_warn(message, offender, a, b, c, d) {
         var character, line, warning;
         offender = offender || next_token;  // ~~
         line = offender.line || 0;
@@ -1167,20 +1167,24 @@ var JSLINT = (function () {
         return warning;
     }
 
+    function warn(message, offender, a, b, c, d) {
+        do_warn(message, offender, a, b, c, d);
+    }
+
     function warn_at(message, line, character, a, b, c, d) {
-        return warn(message, {
+        warn(message, {
             line: line,
             from: character
         }, a, b, c, d);
     }
 
     function stop(message, offender, a, b, c, d) {
-        var warning = warn(message, offender, a, b, c, d);
+        var warning = do_warn(message, offender, a, b, c, d);
         quit(bundle.stopping, warning.line, warning.character);
     }
 
     function stop_at(message, line, character, a, b, c, d) {
-        return stop(message, {
+        stop(message, {
             line: line,
             from: character
         }, a, b, c, d);
