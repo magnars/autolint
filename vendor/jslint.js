@@ -202,6 +202,7 @@
 // For example:
 
 /*properties
+    'suppress',
     '\b', '\t', '\n', '\f', '\r', '!=', '!==', '"', '%', '\'', '(arguments)',
     '(begin)', '(breakage)', '(context)', '(error)', '(identifier)', '(line)',
     '(loopage)', '(name)', '(params)', '(scope)', '(token)', '(vars)',
@@ -891,6 +892,7 @@ var JSLINT = (function () {
         ], false),
 
         strict_mode,
+        suppressed_messages = {},
         syntax = {},
         tab,
         token,
@@ -1081,6 +1083,13 @@ var JSLINT = (function () {
     function add_to_predefined(group) {
         Object.keys(group).forEach(function (name) {
             predefined[name] = group[name];
+        });
+    }
+
+
+    function add_to_suppressed_messages(group) {
+        Object.keys(group).forEach(function (name) {
+            suppressed_messages[name] = group[name];
         });
     }
 
@@ -2184,6 +2193,38 @@ klass:              do {
     }
 
 
+    function do_suppresses() {
+        var name, is_suppress;
+        for (;;) {
+            if (next_token.id !== '(string)' && !next_token.identifier) {
+                return;
+            }
+            name = next_token.string;
+            advance();
+            is_suppress = true;
+            if (next_token.id === ':') {
+                advance(':');
+                switch (next_token.id) {
+                case 'true':
+                    advance('true');
+                    break;
+                case 'false':
+                    is_suppress = false;
+                    advance('false');
+                    break;
+                default:
+                    stop('unexpected_a');
+                }
+            }
+            suppressed_messages[name] = is_suppress;
+            if (next_token.id !== ',') {
+                return;
+            }
+            advance(',');
+        }
+    }
+
+
     function do_jslint() {
         var name, value;
         while (next_token.id === '(string)' || next_token.identifier) {
@@ -2278,6 +2319,9 @@ klass:              do {
                 warn('adsafe_a', this);
             }
             do_globals();
+            break;
+        case '/*suppress':
+            do_suppresses();
             break;
         default:
             stop('unexpected_a', this);
@@ -3997,6 +4041,7 @@ klass:              do {
     stmt('/*members', directive);
     stmt('/*property', directive);
     stmt('/*properties', directive);
+    stmt('/*suppress', directive);
 
     stmt('var', function () {
 
@@ -6009,7 +6054,7 @@ klass:              do {
 
     itself = function JSLint(the_source, the_option) {
 
-        var i, predef, tree;
+        var i, predef, suppress, tree;
         JSLINT.errors = [];
         JSLINT.tree = '';
         begin = prev_token = token = next_token =
@@ -6027,6 +6072,16 @@ klass:              do {
                     }
                 } else if (typeof predef === 'object') {
                     add_to_predefined(predef);
+                }
+            }
+            suppress = option.suppress;
+            if (suppress) {
+                if (Array.isArray(suppress)) {
+                    for (i = 0; i < suppress.length; i += 1) {
+                        suppressed_messages[suppress[i]] = true;
+                    }
+                } else if (typeof suppress === 'object') {
+                    add_to_suppressed_messages(suppress);
                 }
             }
             do_safe();
