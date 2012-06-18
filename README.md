@@ -206,6 +206,18 @@ For jshint:
       }
     };
 
+The rules in autolint.js are project-wide, but you can still have file and function specific rules, like this:
+
+    /*jslint bitwise:true*/
+
+Adding it to the top of the file will allow bitwise operators in the entire file, or you can add it to a single function:
+
+    function justHere() {
+        /*jslint bitwise:true*/
+        return 1 << 1;
+    }
+
+
 Contribute
 ----------
 If you want to help out with features or bug fixes, that's awesome.
