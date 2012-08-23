@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/magnars/autolint.png)](http://travis-ci.org/magnars/autolint)
 Autolint
 ========
 
