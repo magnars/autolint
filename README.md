@@ -12,6 +12,8 @@ Latest changes
   to avoid issues where Windows will try to execute the `autolint.js`
   config file when running `autolint`.
 
+* Now supports the exit signal on Windows to check all files.
+
 Changes from 0.1.5 to 1.0.0
 ---------------------------
 
