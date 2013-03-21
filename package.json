@@ -1,6 +1,6 @@
 {
   "name": "autolint",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "./lib/autolint",
   "description": "Autolint watches your files for jslint-errors.",
   "author": "Magnar Sveen <magnars@gmail.com>",
@@ -13,7 +13,7 @@
     "test": "buster test"
   },
   "engines": {
-    "node": ">=0.6"
+    "node": ">=0.8"
   },
   "bin": {
     "autolint": "./bin/autolint"
@@ -23,7 +23,7 @@
     "growl": "~1.1",
     "underscore": "~1.1",
     "when": "https://github.com/cujojs/when/tarball/1.0.2",
-    "fs-watch-tree": "~0.2"
+    "watch": "~0.6"
   },
   "keywords": [
     "JavaScript",

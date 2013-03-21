@@ -1,0 +1,12 @@
+* Todo [0/8]
+** TODO Dont bundle jslint or jshint, but fetch them with npm
+   - requires some loading magic for jslint, since Crockford refuses
+     to make jslint node-friendly.
+** TODO look for changes in directories using some watch lib
+** TODO create plugin for js2-mode.el that sets global-externs
+** TODO use when.js instead of buster-promise
+** TODO being blamed for introducing an error, AND praised for fixing it,
+   when changing around whitespace (changes line numbers)
+** TODO keep getting "nice cleanup!" in a file with too many errors
+** TODO files with more than 50 errors are reported as having 52 errors.
+** TODO switching git branches can be spammy, any way around that?
