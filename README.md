@@ -1,45 +1,16 @@
-Autolint
-========
+# Autolint
 
 Autolint watches your files for jslint-errors. DRY up your js-files, freeing
 them of all those linting config comments. Gather all your linting preferences
 in one place per project.
 
-Latest changes
----------------------------
-
-* The configuration file can now also be called `autolint-config.js`
-  to avoid issues where Windows will try to execute the `autolint.js`
-  config file when running `autolint`.
-
-* Now supports the exit signal on Windows to check all files.
-
-Changes from 0.1.5 to 1.0.0
----------------------------
-
-Autolint now uses [semantic versioning](http://semver.org).
-
-* The configuration file is no longer a `json`-file, but a proper node
-  module. Add `module.exports =` to the start of the file and rename to
-  `autolint.js` to upgrade.
-* Autolint no longer runs without a config file. Running it without one will
-  prompt you for a default config file to be created.
-* Passing `--once` to autolint makes it not-so-auto. Instead it is run once,
-  exiting with a `-1` error code if any lint is found. This makes it well
-  suited for pre-commit-hooks and the like.
-* Updated bundled versions of jslint and jshint - these have been significantly
-  changed since last, so your configuration file will certainly need an upgrade
-  too.
-
-Installation
-------------
+## Installation
 
 Make sure you've got [node.js](http://nodejs.org/) and [npm](http://npmjs.org/), then:
 
     npm install autolint -g
 
-Basic usage
------------
+## Basic usage
 
 Create a default configuration file by running:
 
@@ -57,8 +28,7 @@ You can also skip the watching-part, and just lint the entire project once:
 
     autolint --once
 
-Configuration
--------------
+## Configuration
 
 Look at the default configuration
 [`lib/default-configuration.js`](autolint/blob/master/lib/default-configuration.js)
@@ -77,8 +47,8 @@ Example:
       }
     };
 
-Excluding files
----------------
+### Excluding files
+
 You can also tell autolint to skip linting some files, like so:
 
     module.exports = {
@@ -93,15 +63,15 @@ You can also tell autolint to skip linting some files, like so:
 Any files (or paths) containing those words will not be linted, or counted
 towards your error total.
 
-Growl
------
+## Growl
+
 If you want autolint to notify you when new lint errors are introduced,
 you can [download Growl here](http://growl.info/).
 
 Make sure you also install the `growlnotify` in the `Extras`-folder.
 
-Using JSHint
-------------
+## Using JSHint
+
 If JSLint is hurting your feelings, you can easily switch to
 [JSHint](http://jshint.com) by adding this to your configuration:
 
@@ -109,8 +79,8 @@ If JSLint is hurting your feelings, you can easily switch to
       "linter": "jshint"
     };
 
-Linter options
---------------
+## Linter options
+
 The defaults are very strict, so tweak them to your liking.
 
 For jslint:
@@ -226,9 +196,34 @@ Adding it to the top of the file will allow bitwise operators in the entire file
         return 1 << 1;
     }
 
+## Changes
 
-Contribute
-----------
+### 1.1.0
+
+* The configuration file can now also be called `autolint-config.js`
+  to avoid issues where Windows will try to execute the `autolint.js`
+  config file when running `autolint`.
+
+* Now supports the exit signal on Windows to check all files.
+
+### 1.0.0
+
+Autolint now uses [semantic versioning](http://semver.org).
+
+* The configuration file is no longer a `json`-file, but a proper node
+  module. Add `module.exports =` to the start of the file and rename to
+  `autolint.js` to upgrade.
+* Autolint no longer runs without a config file. Running it without one will
+  prompt you for a default config file to be created.
+* Passing `--once` to autolint makes it not-so-auto. Instead it is run once,
+  exiting with a `-1` error code if any lint is found. This makes it well
+  suited for pre-commit-hooks and the like.
+* Updated bundled versions of jslint and jshint - these have been significantly
+  changed since last, so your configuration file will certainly need an upgrade
+  too.
+
+## Contribute
+
 If you want to help out with features or bug fixes, that's awesome.
 Check out [`todo.md`](autolint/blob/master/todo.md) for inspiration.
 
@@ -238,16 +233,12 @@ Check out [`todo.md`](autolint/blob/master/todo.md) for inspiration.
   future version unintentionally.
 * Commit and send me a merge request.
 
-Setting up development environment
-----------------------------------
+### Setting up development environment
+
 Check out the source code from your fork:
 
     git clone <url to your fork>
     cd autolint
-
-Fetch the dependencies with npm:
-
-    npm install
 
 Install [buster.js](http://busterjs.org) if you haven't already:
 
@@ -256,6 +247,10 @@ Install [buster.js](http://busterjs.org) if you haven't already:
 Then link buster in:
 
     npm link buster
+
+Fetch the dependencies with npm:
+
+    npm install
 
 Run the tests to make sure everything works:
 
@@ -277,6 +272,6 @@ Also make sure you follow the linting rules with:
 
 of course. ^^
 
-License
--------
+## License
+
 See LICENSE file.
