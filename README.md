@@ -5,6 +5,13 @@ Autolint watches your files for jslint-errors. DRY up your js-files, freeing
 them of all those linting config comments. Gather all your linting preferences
 in one place per project.
 
+Latest changes
+---------------------------
+
+* The configuration file can now also be called `autolint-config.js`
+  to avoid issues where Windows will try to execute the `autolint.js`
+  config file when running `autolint`.
+
 Changes from 0.1.5 to 1.0.0
 ---------------------------
 
