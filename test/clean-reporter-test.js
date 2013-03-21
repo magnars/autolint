@@ -37,15 +37,13 @@ buster.testCase("cleanReporter", {
     "should list other files with errors": function () {
       this.repository.getDirtyFiles = this.stub().returns([
         checkedFile.create('file1.js', [{}]),
-        checkedFile.create('file2.js', [{}]),
-        checkedFile.create('file3.js', [{}, {}]),
-        checkedFile.create('file4.js', [{}, {}, {}])
+        checkedFile.create('file2.js', [{}])
       ]);
       this.repository.emit('errorsFixed', this.file, [{}]);
       assert.called(print.green);
       assert.called(print.black);
       assert.calledWith(print.green, '', 'Nice! file1.js is clean. Want to clean more?');
-      assert.calledWith(print.black, ['  file2.js (1 error)', '  file3.js (2 errors)']);
+      assert.calledWith(print.black, ['  file2.js (1 error)']);
     }
   },
 
