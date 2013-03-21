@@ -25,6 +25,10 @@
     "when": "https://github.com/cujojs/when/tarball/1.0.2",
     "watch": "~0.6"
   },
+  "devDependencies": {
+    "buster": "~0.6",
+    "buster-lint": "~0"
+  },
   "keywords": [
     "JavaScript",
     "lint",
