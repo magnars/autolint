@@ -198,6 +198,10 @@ Adding it to the top of the file will allow bitwise operators in the entire file
 
 ## Changes
 
+### 1.1.3
+
+* Better stability of file-watching.
+
 ### 1.1.0
 
 * The configuration file can now also be called `autolint-config.js`
