@@ -1,4 +1,5 @@
-* Todo [3/9]
+* Todo [4/10]
+** DONE Avoid errors because of too many open files
 ** TODO Dont bundle jslint or jshint, but fetch them with npm
    - requires some loading magic for jslint, since Crockford refuses
      to make jslint node-friendly.
