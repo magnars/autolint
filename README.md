@@ -28,6 +28,9 @@ You can also skip the watching-part, and just lint the entire project once:
 
     autolint --once
 
+It terminates with a non-zero exit code if any lint is found, making it
+well suited for pre-commit hooks if you are so inclined.
+
 ## Configuration
 
 Look at the default configuration
@@ -229,13 +232,13 @@ Autolint now uses [semantic versioning](http://semver.org).
 ## Contribute
 
 If you want to help out with features or bug fixes, that's awesome.
-Check out [`todo.md`](autolint/blob/master/todo.md) for inspiration.
+Check out [`todo.org`](autolint/blob/master/todo.org) for inspiration.
 
 * Fork the project.
 * Make your feature addition or bug fix.
 * Don't forget tests. This is important so I don't break it in a
   future version unintentionally.
-* Commit and send me a merge request.
+* Commit and send me a pull request.
 
 ### Setting up development environment
 
@@ -266,7 +269,7 @@ Install [watchr](https://github.com/mynyml/watchr) to run the tests automaticall
 
 Then start the autotest with:
 
-    watchr autotest.watchr
+    watchr watch-tests.watchr
 
 If watchr can't be interrupted with 2x ctrl-c, switch to ruby ~1.9
 
