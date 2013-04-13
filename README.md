@@ -31,6 +31,8 @@ You can also skip the watching-part, and just lint the entire project once:
 It terminates with a non-zero exit code if any lint is found, making it
 well suited for pre-commit hooks if you are so inclined.
 
+If you're confused by the linting error messages, check out [jslinterrors.com](http://jslinterrors.com/).
+
 ## Configuration
 
 Look at the default configuration
@@ -70,8 +72,6 @@ towards your error total.
 
 If you want autolint to notify you when new lint errors are introduced,
 you can [download Growl here](http://growl.info/).
-
-Make sure you also install the `growlnotify` in the `Extras`-folder.
 
 ## Using JSHint
 
