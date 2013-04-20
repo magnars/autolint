@@ -33,6 +33,10 @@ well suited for pre-commit hooks if you are so inclined.
 
 If you're confused by the linting error messages, check out [jslinterrors.com](http://jslinterrors.com/).
 
+There's also an
+[autolint maven plugin](https://github.com/magnars/autolint-maven-plugin)
+that's handy for continuous integration.
+
 ## Configuration
 
 Look at the default configuration
