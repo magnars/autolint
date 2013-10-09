@@ -20,13 +20,14 @@
   },
   "dependencies": {
     "glob": "~3.0",
-    "growl": "~1.1",
+    "growl": "~1.7",
     "underscore": "~1.1",
     "when": "https://github.com/cujojs/when/tarball/1.0.2"
   },
   "devDependencies": {
     "buster": "~0.6",
-    "buster-lint": "~0"
+    "buster-lint": "~0",
+    "require-subvert": "0.0.1"
   },
   "keywords": [
     "JavaScript",
