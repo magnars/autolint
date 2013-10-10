@@ -205,6 +205,10 @@ Adding it to the top of the file will allow bitwise operators in the entire file
 
 ## Changes
 
+### 1.1.4
+
+* Upgrade to a windows compatible version of node-growl. ([Stian Veum Møllersen](https://github.com/mollerse))
+
 ### 1.1.3
 
 * Better stability of file-watching.
