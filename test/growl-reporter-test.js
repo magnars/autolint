@@ -1,14 +1,16 @@
 var buster = require('buster');
 var EventEmitter = require('events').EventEmitter;
-var growl = require('growl');
+var requireSubvert = require('require-subvert')(__dirname);
 
-var growlReporter = require('../lib/growl-reporter');
+var growl, growlReporter;
 
 buster.testCase("growlReporter", {
   setUp: function () {
+    growl = this.stub();
+    requireSubvert.subvert('growl', growl);
+    growlReporter = requireSubvert.require('../lib/growl-reporter');
     this.repository = new EventEmitter();
     this.reporter = growlReporter.create(this.repository);
-    this.stub(growl, 'notify');
   },
 
   "should complain about missing repository": function () {
@@ -28,8 +30,8 @@ buster.testCase("growlReporter", {
   "should growl about introduced errors": function () {
     this.reporter.handleErrorsIntroduced({name: 'file.js'}, [{}]);
 
-    assert.calledOnce(growl.notify);
-    var options = growl.notify.getCall(0).args[1];
+    assert.calledOnce(growl);
+    var options = growl.getCall(0).args[1];
     assert.match(options.title, 'You introduced 1 lint error in file.js:');
   },
 
@@ -40,7 +42,7 @@ buster.testCase("growlReporter", {
       reason: 'Booyah!'
     }, {}]);
 
-    assert.calledWith(growl.notify, 'First error at line 17 char 9:\nBooyah!');
+    assert.calledWith(growl, 'First error at line 17 char 9:\nBooyah!');
   },
 
   "should handle errorsFixed event": function () {
@@ -53,7 +55,7 @@ buster.testCase("growlReporter", {
 
   "should congratulate on clean file": function () {
     this.reporter.handleErrorsFixed({name: 'file.js', errors: []}, [{}]);
-    assert.calledWith(growl.notify, 'file.js is clean.');
+    assert.calledWith(growl, 'file.js is clean.');
   },
 
   "should list next error": function () {
@@ -62,12 +64,12 @@ buster.testCase("growlReporter", {
       character: 0,
       reason: 'Bah, humbug!'
     }]}, [{}]);
-    assert.calledWith(growl.notify, 'Next error at line 19 char 0:\nBah, humbug!');
+    assert.calledWith(growl, 'Next error at line 19 char 0:\nBah, humbug!');
   },
 
   "should escape $": function () {
     this.reporter.handleErrorsFixed({name: 'file$.js', errors: []}, [{}]);
-    assert.calledWith(growl.notify, 'file\\$.js is clean.');
+    assert.calledWith(growl, 'file\\$.js is clean.');
   }
 
 });
