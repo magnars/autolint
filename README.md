@@ -233,6 +233,12 @@ Autolint now uses [semantic versioning](http://semver.org).
   changed since last, so your configuration file will certainly need an upgrade
   too.
 
+## Contributors
+
+* [Stian Veum Møllersen](https://github.com/mollerse) upgraded to a windows compatible version of node-growl.
+
+Thanks!
+
 ## Contribute
 
 If you want to help out with features or bug fixes, that's awesome.
