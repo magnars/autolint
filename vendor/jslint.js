@@ -202,6 +202,7 @@
 // For example:
 
 /*properties
+    'suppress', 'suppressed_messages',
     '\b', '\t', '\n', '\f', '\r', '!=', '!==', '"', '%', '\'', '(arguments)',
     '(begin)', '(breakage)', '(context)', '(error)', '(identifier)', '(line)',
     '(loopage)', '(name)', '(params)', '(scope)', '(token)', '(vars)',
@@ -891,6 +892,7 @@ var JSLINT = (function () {
         ], false),
 
         strict_mode,
+        suppressed_messages = {},
         syntax = {},
         tab,
         token,
@@ -967,7 +969,7 @@ var JSLINT = (function () {
         sx = /^\s*([{}:#%.=,>+\[\]@()"';]|[*$\^~]=|[a-zA-Z_][a-zA-Z0-9_\-]*|[0-9]+|<\/|\/\*)/,
         ssx = /^\s*([@#!"'};:\-%.=,+\[\]()*_]|[a-zA-Z][a-zA-Z0-9._\-]*|\/\*?|\d+(?:\.\d+)?|<\/)/,
 // token
-        tx = /^\s*([(){}\[\]\?.,:;'"~#@`]|={1,3}|\/(\*(jslint|properties|property|members?|globals?)?|=|\/)?|\*[\/=]?|\+(?:=|\++)?|-(?:=|-+)?|[\^%]=?|&[&=]?|\|[|=]?|>{1,3}=?|<(?:[\/=!]|\!(\[|--)?|<=?)?|\!={0,2}|[a-zA-Z_$][a-zA-Z0-9_$]*|[0-9]+(?:[xX][0-9a-fA-F]+|\.[0-9]*)?(?:[eE][+\-]?[0-9]+)?)/,
+        tx = /^\s*([(){}\[\]\?.,:;'"~#@`]|={1,3}|\/(\*(jslint|properties|property|members?|globals?|suppress)?|=|\/)?|\*[\/=]?|\+(?:=|\++)?|-(?:=|-+)?|[\^%]=?|&[&=]?|\|[|=]?|>{1,3}=?|<(?:[\/=!]|\!(\[|--)?|<=?)?|\!={0,2}|[a-zA-Z_$][a-zA-Z0-9_$]*|[0-9]+(?:[xX][0-9a-fA-F]+|\.[0-9]*)?(?:[eE][+\-]?[0-9]+)?)/,
 // url badness
         ux = /&|\+|\u00AD|\.\.|\/\*|%[^;]|base64|url|expression|data|mailto|script/i,
 
@@ -1085,6 +1087,13 @@ var JSLINT = (function () {
     }
 
 
+    function add_to_suppressed_messages(group) {
+        Object.keys(group).forEach(function (name) {
+            suppressed_messages[name] = group[name];
+        });
+    }
+
+
     function assume() {
         if (!option.safe) {
             if (option.rhino) {
@@ -1137,7 +1146,10 @@ var JSLINT = (function () {
         };
     }
 
-    function warn(message, offender, a, b, c, d) {
+    function do_warn(message, offender, a, b, c, d) {
+        if (JSLINT.suppressed_messages[message] === true) {
+            return false;
+        }
         var character, line, warning;
         offender = offender || next_token;  // ~~
         line = offender.line || 0;
@@ -1167,20 +1179,26 @@ var JSLINT = (function () {
         return warning;
     }
 
+    function warn(message, offender, a, b, c, d) {
+        do_warn(message, offender, a, b, c, d);
+    }
+
     function warn_at(message, line, character, a, b, c, d) {
-        return warn(message, {
+        warn(message, {
             line: line,
             from: character
         }, a, b, c, d);
     }
 
     function stop(message, offender, a, b, c, d) {
-        var warning = warn(message, offender, a, b, c, d);
-        quit(bundle.stopping, warning.line, warning.character);
+        var warning = do_warn(message, offender, a, b, c, d);
+        if (warning !== false) {
+            quit(bundle.stopping, warning.line, warning.character);
+        }
     }
 
     function stop_at(message, line, character, a, b, c, d) {
-        return stop(message, {
+        stop(message, {
             line: line,
             from: character
         }, a, b, c, d);
@@ -2180,6 +2198,38 @@ klass:              do {
     }
 
 
+    function do_suppresses() {
+        var name, is_suppress;
+        for (;;) {
+            if (next_token.id !== '(string)' && !next_token.identifier) {
+                return;
+            }
+            name = next_token.string;
+            advance();
+            is_suppress = true;
+            if (next_token.id === ':') {
+                advance(':');
+                switch (next_token.id) {
+                case 'true':
+                    advance('true');
+                    break;
+                case 'false':
+                    is_suppress = false;
+                    advance('false');
+                    break;
+                default:
+                    stop('unexpected_a');
+                }
+            }
+            suppressed_messages[name] = is_suppress;
+            if (next_token.id !== ',') {
+                return;
+            }
+            advance(',');
+        }
+    }
+
+
     function do_jslint() {
         var name, value;
         while (next_token.id === '(string)' || next_token.identifier) {
@@ -2274,6 +2324,9 @@ klass:              do {
                 warn('adsafe_a', this);
             }
             do_globals();
+            break;
+        case '/*suppress':
+            do_suppresses();
             break;
         default:
             stop('unexpected_a', this);
@@ -3993,6 +4046,7 @@ klass:              do {
     stmt('/*members', directive);
     stmt('/*property', directive);
     stmt('/*properties', directive);
+    stmt('/*suppress', directive);
 
     stmt('var', function () {
 
@@ -6005,7 +6059,7 @@ klass:              do {
 
     itself = function JSLint(the_source, the_option) {
 
-        var i, predef, tree;
+        var i, predef, suppress, tree;
         JSLINT.errors = [];
         JSLINT.tree = '';
         begin = prev_token = token = next_token =
@@ -6023,6 +6077,16 @@ klass:              do {
                     }
                 } else if (typeof predef === 'object') {
                     add_to_predefined(predef);
+                }
+            }
+            suppress = option.suppress;
+            if (suppress) {
+                if (Array.isArray(suppress)) {
+                    for (i = 0; i < suppress.length; i += 1) {
+                        suppressed_messages[suppress[i]] = true;
+                    }
+                } else if (typeof suppress === 'object') {
+                    add_to_suppressed_messages(suppress);
                 }
             }
             do_safe();
@@ -6402,6 +6466,8 @@ klass:              do {
     itself.jslint = itself;
 
     itself.edition = '2012-02-16';
+
+    itself.suppressed_messages = suppressed_messages;
 
     return itself;
 }());
